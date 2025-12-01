@@ -1,0 +1,25 @@
+# build output
+**/dist
+**/target
+
+# node
+**/.turbo
+**/*.tsbuildinfo
+**/node_modules
+
+# other files/folders
+**/*.logs
+**/*.csv
+**/*.xlsx
+**/*.xlsm
+
+# IDE
+**/*.iml
+**/*.ipr
+**/*.iws
+**/.idea
+**/.project
+**/.settings
+**/.classpath
+**/.factorypath
+**/kls_database.db

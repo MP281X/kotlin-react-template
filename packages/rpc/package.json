@@ -1,0 +1,25 @@
+{
+	"type": "module",
+	"name": "@/rpc",
+
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
+	"exports": {
+		".": { "import": "./src/rpc.ts" },
+		"./sync": { "import": "./src/sync.ts" }
+	},
+
+	"scripts": {
+		"fix": "biome check --write --unsafe",
+		"check": "tsc --noEmit && biome check"
+	},
+
+	"dependencies": {
+		"@tanstack/react-db": "latest",
+		"@tanstack/electric-db-collection": "latest"
+	},
+
+	"devDependencies": { "backend": "workspace:*" },
+	"peerDependencies": { "@/utils": "workspace:*" }
+}

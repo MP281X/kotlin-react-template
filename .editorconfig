@@ -1,0 +1,33 @@
+root = true
+
+# All text files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Kotlin files
+[*.{kt,kts}]
+indent_size = 4
+indent_style = space
+max_line_length = 200
+
+# Key overrides for more readable code
+ktlint_standard_wrapping = disabled
+ktlint_standard_class-signature = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_argument-list-wrapping = disabled
+ktlint_standard_parameter-list-wrapping = disabled
+ktlint_standard_function-expression-body = disabled
+ktlint_standard_no-line-break-before-assignment = enabled
+
+# Trailing comma preferences
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+# XML files (POM, etc)
+[*.{xml,pom}]
+indent_size = 4
+indent_style = space

@@ -1,0 +1,76 @@
+{
+	"$schema": "../node_modules/@biomejs/biome/configuration_schema.json",
+
+	"linter": {
+		"rules": {
+			"complexity": {
+				"useLiteralKeys": "off",
+				"useArrowFunction": "error",
+				"noUselessStringConcat": "error",
+				"useSimplifiedLogicExpression": "error"
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noConfusingVoidType": "off",
+				"noShadowRestrictedNames": "off"
+			},
+			"style": {
+				"noEnum": "error",
+				"noYodaExpression": "error",
+				"noParameterAssign": "error",
+				"useNumberNamespace": "error",
+				"useAsConstAssertion": "error",
+				"useEnumInitializers": "error",
+				"useDefaultParameterLast": "error",
+				"noUnusedTemplateLiteral": "error",
+				"useConsistentArrayType": { "level": "error", "options": { "syntax": "shorthand" } },
+				"noRestrictedGlobals": {
+					"level": "error",
+					"options": { "deniedGlobals": { "Array": "", "String": "" } }
+				}
+			},
+			"correctness": {
+				"noChildrenProp": "off",
+				"noUnusedImports": "off",
+				"noUnusedVariables": "off",
+				"useUniqueElementIds": "off",
+				"useImportExtensions": "error",
+				"noUndeclaredDependencies": "off",
+				"noUnusedFunctionParameters": "off"
+			},
+			"security": {
+				"noGlobalEval": "error",
+				"noDangerouslySetInnerHtml": "error"
+			},
+			"a11y": { "noLabelWithoutControl": "off" },
+			"nursery": {
+				"noFloatingPromises": "error",
+				"useSortedClasses": { "level": "error", "fix": "safe" }
+			}
+		}
+	},
+
+	"formatter": { "lineWidth": 120, "formatWithErrors": true },
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+
+	"html": { "formatter": { "indentScriptAndStyle": true } },
+	"css": { "formatter": { "enabled": true }, "parser": { "cssModules": true, "tailwindDirectives": true } },
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingCommas": "none",
+			"arrowParentheses": "asNeeded"
+		}
+	},
+
+	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+	"files": { "includes": ["**/*.ts", "**/*.tsx", "**/*.css", "**/*.json", "!**/*.d.ts", "!**/*.gen.ts"] },
+
+	"overrides": [
+		{
+			"includes": ["**/package.json"],
+			"json": { "formatter": { "expand": "auto" } }
+		}
+	]
+}

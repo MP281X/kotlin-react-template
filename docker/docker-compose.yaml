@@ -1,0 +1,34 @@
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.nginx
+    network_mode: host
+
+  postgres:
+    image: postgres:18.1-alpine
+    ports: [5432:5432]
+    environment:
+      TZ: 'Europe/Rome'
+      PGTZ: 'Europe/Rome'
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    command: ["-c", "listen_addresses=*", "-c", "wal_level=logical"]
+    restart: on-failure
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
+      interval: 5s
+      timeout: 10s
+    volumes: [template-postgres:/var/lib/postgresql/data]
+
+  electric:
+    image: electricsql/electric:latest
+    ports: [5433:3000]
+    environment:
+      ELECTRIC_INSECURE: true
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+    restart: on-failure
+    depends_on: { postgres: { condition: service_healthy } }
+
+volumes: { template-postgres: {} }

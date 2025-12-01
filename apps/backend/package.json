@@ -1,0 +1,20 @@
+{
+	"type": "module",
+	"name": "backend",
+
+	"exports": { ".": { "import": "./openapi.g.ts" } },
+
+	"scripts": {
+		"dev": "./mvnw spring-boot:run --quiet -DskipTests -Dspring.profiles.active=dev",
+
+		"migrate": "./mvnw -Dflyway.cleanDisabled=false flyway:clean && ./mvnw flyway:migrate && ./mvnw jooq-codegen:generate",
+		"codegen": "./mvnw spring-boot:run -Pcodegen && openapi-typescript target/openapi.json -o ./openapi.g.ts",
+
+		"fix": "../../scripts/ktlint --format 'src/main/kotlin/com/backend/**/*.kt' '!src/main/kotlin/com/backend/jooq/**/*'",
+		"check": "./mvnw compile",
+
+		"build": "./mvnw -DskipTests package"
+	},
+
+	"devDependencies": { "openapi-typescript": "^7" }
+}

@@ -1,0 +1,20 @@
+{
+	"ui": "tui",
+	"$schema": "https://turbo.build/schema.json",
+
+	"globalDependencies": [".env", "tsconfig.json", "biome.json", "pnpm-lock.yaml"],
+	"globalEnv": ["BACKEND_*", "PUBLIC_*", "POSTGRES_*", "NODE_*"],
+
+	"tasks": {
+		"dev": { "cache": false, "interactive": true, "persistent": true },
+		"migrate": { "cache": false, "outputs": ["src/main/kotlin/com/backend/jooq/**"] },
+		"codegen": { "cache": true, "outputs": ["openapi.g.ts"], "dependsOn": ["backend#migrate"] },
+
+		"fix": { "cache": false },
+		"test": { "cache": false },
+		"check": { "cache": true },
+
+		"build": { "cache": true, "dependsOn": ["^build"], "outputs": ["dist/**", "target/**", "*.css"] },
+		"setup": { "cache": false }
+	}
+}

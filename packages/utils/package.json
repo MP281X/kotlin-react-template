@@ -1,0 +1,16 @@
+{
+	"type": "module",
+	"name": "@/utils",
+
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
+	"exports": {
+		"./*": { "import": "./src/*.ts" }
+	},
+
+	"scripts": {
+		"fix": "biome check --write --unsafe",
+		"check": "tsc --noEmit && biome check"
+	}
+}
