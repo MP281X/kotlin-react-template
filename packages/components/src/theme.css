@@ -1,7 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "#components/ai/monaco.css";
-@import "#components/ai/markdown.css";
 
 :root {
 	--background: oklch(1 0 0);

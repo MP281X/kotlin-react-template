@@ -13,4 +13,3 @@ export function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
 	if (!show) return
 	return <Loader2Icon role="status" aria-label="Loading" className={cn('size-4 animate-spin', className)} {...props} />
 }
-

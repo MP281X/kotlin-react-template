@@ -10,47 +10,39 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as homeRouteRouteImport } from './routes/(home)/route'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as homeUsersIndexRouteImport } from './routes/(home)/users/index'
-import { Route as homeAuditIndexRouteImport } from './routes/(home)/audit/index'
+import { Route as homeIndexRouteImport } from './routes/(home)/index'
 
 const homeRouteRoute = homeRouteRouteImport.update({
             id: '/(home)',getParentRoute: () => rootRouteImport
           }as any)
-const IndexRoute = IndexRouteImport.update({
-            id: '/',path: '/',getParentRoute: () => rootRouteImport
-          }as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
             id: '/auth/',path: '/auth/',getParentRoute: () => rootRouteImport
           }as any)
-const homeUsersIndexRoute = homeUsersIndexRouteImport.update({
-            id: '/users/',path: '/users/',getParentRoute: () => homeRouteRoute
-          }as any)
-const homeAuditIndexRoute = homeAuditIndexRouteImport.update({
-            id: '/audit/',path: '/audit/',getParentRoute: () => homeRouteRoute
+const homeIndexRoute = homeIndexRouteImport.update({
+            id: '/',path: '/',getParentRoute: () => homeRouteRoute
           }as any)
 
 export interface FileRoutesByFullPath {
-'/': typeof IndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/users': typeof homeUsersIndexRoute
+'/': typeof homeIndexRoute,'/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
-'/': typeof IndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/users': typeof homeUsersIndexRoute
+'/': typeof homeIndexRoute,'/auth': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
 '__root__': typeof rootRouteImport,
-'/': typeof IndexRoute,'/(home)': typeof homeRouteRouteWithChildren,'/auth/': typeof AuthIndexRoute,'/(home)/audit/': typeof homeAuditIndexRoute,'/(home)/users/': typeof homeUsersIndexRoute
+'/(home)': typeof homeRouteRouteWithChildren,'/(home)/': typeof homeIndexRoute,'/auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
 fileRoutesByFullPath: FileRoutesByFullPath
-fullPaths: '/'|'/auth'|'/audit'|'/users'
+fullPaths: '/'|'/auth'
 fileRoutesByTo: FileRoutesByTo
-to: '/'|'/auth'|'/audit'|'/users'
-id: '__root__'|'/'|'/(home)'|'/auth/'|'/(home)/audit/'|'/(home)/users/'
+to: '/'|'/auth'
+id: '__root__'|'/(home)'|'/(home)/'|'/auth/'
 fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-IndexRoute: typeof IndexRoute,homeRouteRoute: typeof homeRouteRouteWithChildren,AuthIndexRoute: typeof AuthIndexRoute
+homeRouteRoute: typeof homeRouteRouteWithChildren,AuthIndexRoute: typeof AuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -62,13 +54,6 @@ declare module '@tanstack/react-router' {
           preLoaderRoute: typeof homeRouteRouteImport
           parentRoute: typeof rootRouteImport
         }
-'/': {
-          id: '/'
-          path: '/'
-          fullPath: '/'
-          preLoaderRoute: typeof IndexRouteImport
-          parentRoute: typeof rootRouteImport
-        }
 '/auth/': {
           id: '/auth/'
           path: '/auth'
@@ -76,18 +61,11 @@ declare module '@tanstack/react-router' {
           preLoaderRoute: typeof AuthIndexRouteImport
           parentRoute: typeof rootRouteImport
         }
-'/(home)/users/': {
-          id: '/(home)/users/'
-          path: '/users'
-          fullPath: '/users'
-          preLoaderRoute: typeof homeUsersIndexRouteImport
-          parentRoute: typeof homeRouteRoute
-        }
-'/(home)/audit/': {
-          id: '/(home)/audit/'
-          path: '/audit'
-          fullPath: '/audit'
-          preLoaderRoute: typeof homeAuditIndexRouteImport
+'/(home)/': {
+          id: '/(home)/'
+          path: '/'
+          fullPath: '/'
+          preLoaderRoute: typeof homeIndexRouteImport
           parentRoute: typeof homeRouteRoute
         }
   }
@@ -96,16 +74,16 @@ declare module '@tanstack/react-router' {
 
 
 interface homeRouteRouteChildren {
-  homeAuditIndexRoute: typeof homeAuditIndexRoute,homeUsersIndexRoute: typeof homeUsersIndexRoute
+  homeIndexRoute: typeof homeIndexRoute
 }
 
 const homeRouteRouteChildren: homeRouteRouteChildren = {
-  homeAuditIndexRoute: homeAuditIndexRoute,homeUsersIndexRoute: homeUsersIndexRoute
+  homeIndexRoute: homeIndexRoute
 }
 
 const homeRouteRouteWithChildren = homeRouteRoute._addFileChildren(homeRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,homeRouteRoute: homeRouteRouteWithChildren,AuthIndexRoute: AuthIndexRoute
+  homeRouteRoute: homeRouteRouteWithChildren,AuthIndexRoute: AuthIndexRoute
 }
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()

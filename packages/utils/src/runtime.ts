@@ -1,5 +1,5 @@
 import { FetchHttpClient } from '@effect/platform'
-import { Effect, Either, Function, Layer, Logger, LogLevel, type ManagedRuntime, pipe } from 'effect'
+import { Effect, Layer, Logger, LogLevel, pipe } from 'effect'
 import { LoggerLive } from './logger.ts'
 
 // configure global layers and runtime used in all the projects
@@ -11,17 +11,6 @@ export const BaseLayers = Layer.mergeAll(
 	Logger.minimumLogLevel(LogLevel.Debug),
 	FetchHttpClient.layer
 )
-
-export function runEffectConstructor<Layers, ER>(runtime: ManagedRuntime.ManagedRuntime<Layers, ER>) {
-	return <A, E, R extends Layers>(program: Effect.Effect<A, E, R>, signal?: AbortSignal) =>
-		pipe(
-			program,
-			Effect.catchAllDefect(Effect.fail),
-			Effect.either,
-			program => runtime.runPromise(program, { signal }),
-			res => res.then(Either.getOrThrowWith(Function.identity))
-		)
-}
 
 export type AwaitableEffect<T> = Effect.Effect<T> & PromiseLike<T>
 export function AwaitableEffect<A, E, R>(effect: Effect.Effect<A, E, R>) {

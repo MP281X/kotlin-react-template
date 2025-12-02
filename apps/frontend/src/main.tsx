@@ -1,20 +1,17 @@
-import * as Root from '#routes/__root.tsx'
-import './main.css'
-
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
+import './main.css'
+import * as Fallbacks from '@/components/fallbacks'
+
 const router = createRouter({
-	search: { strict: true },
 	defaultPreload: 'intent',
 	scrollRestoration: true,
-	defaultPendingMs: 0,
-	defaultPendingMinMs: 500,
-	defaultErrorComponent: Root.Error,
-	defaultPendingComponent: Root.Loading,
-	defaultNotFoundComponent: Root.NotFound,
+	defaultErrorComponent: Fallbacks.Error,
+	defaultPendingComponent: Fallbacks.Loading,
+	defaultNotFoundComponent: Fallbacks.NotFound,
 	...(await import('./routeTree.gen.ts'))
 })
 

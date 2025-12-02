@@ -1,59 +1,46 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Effect, Function, Schema } from 'effect'
-import { runEffect } from '#lib/runtime.ts'
+import { createFileRoute, useCanGoBack, useRouter } from '@tanstack/react-router'
+import { pipe, Schema } from 'effect'
+import { Form, revalidateLogic, useForm } from '@/components/form'
 import { rpc } from '@/rpc'
 
-import { Dialog } from '@/ui/components/dialog'
-import { Form } from '@/ui/components/form'
-import Logo from '../../../static/logo.png'
+export const Route = createFileRoute('/auth/')({ component: Page })
 
-export const Route = createFileRoute('/auth/')({
-	validateSearch: Schema.standardSchemaV1(Schema.Struct({ redirect: Schema.optional(Schema.String) })),
-	component: Page
+const signInSchema = Schema.Struct({
+	email: pipe(Schema.Uppercase, Schema.minLength(5), Schema.includes('@')),
+	password: Schema.NonEmptyString
 })
 
 function Page() {
-	const navigate = useNavigate()
-	const { redirect } = Route.useSearch()
+	const router = useRouter()
+	const canGoBack = useCanGoBack()
 
-	const email = localStorage.getItem('email') ?? ''
-	const password = localStorage.getItem('password') ?? ''
+	const navigateAfterAuth = async () => {
+		if (canGoBack) return router.history.back()
+		return await router.navigate({ to: '/' })
+	}
 
-	const form = Form.useForm({
-		defaultValues: { email, password },
-		onSubmit: async ({ value }) =>
-			runEffect(
-				Effect.gen(function* () {
-					yield* rpc.login({ email: value.email, password: value.password })
-
-					localStorage.setItem('email', value.email)
-					if (import.meta.env.DEV) localStorage.setItem('password', value.password)
-
-					const redirectTo = redirect ? decodeURIComponent(redirect) : '/'
-					yield* Effect.all(
-						[Effect.sleep('5 seconds'), Effect.promise(() => navigate({ to: redirectTo, reloadDocument: true }))],
-						{ concurrency: 'unbounded' }
-					)
-				})
-			)
+	const form = useForm({
+		defaultValues: { email: '', password: '' } as rpc.Payload<'login'>,
+		validationLogic: revalidateLogic({ mode: 'change' }),
+		validators: { onDynamic: Schema.standardSchemaV1(signInSchema) },
+		onSubmit: async ({ value }) => {
+			await rpc.login(value)
+			await navigateAfterAuth()
+		}
 	})
 
 	return (
-		<Dialog open onClose={Function.constUndefined}>
-			<div className="flex justify-between">
-				<Dialog.Title className="font-family-nasalization text-2xl">kotlin-react-template</Dialog.Title>
-				<img src={Logo} alt="logo" className="h-8" style={{ imageRendering: 'pixelated' }} />
+		<div className="flex w-full max-w-80 flex-col gap-8">
+			<div className="flex flex-col gap-1 text-center">
+				<h1 className="font-semibold text-2xl tracking-tight">Sign in</h1>
+				<p className="text-muted-foreground text-sm">Enter your credentials to continue</p>
 			</div>
 
-			<Form form={form}>
-				<Dialog.Content>
-					<form.Field name="email" children={Form.Email} />
-					<form.Field name="password" children={Form.Password} />
-				</Dialog.Content>
-				<Dialog.Actions>
-					<form.SubmitButton children="Sign In" />
-				</Dialog.Actions>
+			<Form form={form} className="flex-col gap-4">
+				<form.AppField name="email" children={field => <field.EmailField />} />
+				<form.AppField name="password" children={field => <field.PasswordField />} />
+				<form.SubmitButton children="Login" />
 			</Form>
-		</Dialog>
+		</div>
 	)
 }

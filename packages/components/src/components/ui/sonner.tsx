@@ -36,4 +36,3 @@ export function errorToast(error: unknown) {
 	const message = formatError(error)
 	Sonner.toast.error(message)
 }
-

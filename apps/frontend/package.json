@@ -22,7 +22,7 @@
 		"react": "^19",
 		"react-dom": "^19",
 
-		"@effect-atom/atom-react": "latest",
+		"lucide-react": "latest",
 
 		"@tanstack/react-db": "latest",
 		"@tanstack/react-router": "latest",
