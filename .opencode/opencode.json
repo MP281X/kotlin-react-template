@@ -5,10 +5,21 @@
 		"shadcn": {
 			"type": "local",
 			"command": ["npx", "-y", "shadcn@latest", "mcp"]
+		},
+    "context7": {
+			"type": "local",
+			"command": ["npx", "-y", "@upstash/context7-mcp@latest"]
+		},
+		"grep": {
+			"type": "remote",
+			"url": "https://mcp.grep.app"
 		}
 	},
 
 	"tools": {
-		"shadcn_*": false
+    "shadcn_*": false,
+    "grep_*": false,
+		"effect_*": false,
+		"context7_*": false,
 	}
 }
