@@ -10,8 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as homeRouteRouteImport } from './routes/(home)/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as homeIndexRouteImport } from './routes/(home)/index'
+import { Route as homeRealtimeIndexRouteImport } from './routes/(home)/realtime/index'
 import { Route as homeProfileIndexRouteImport } from './routes/(home)/profile/index'
 import { Route as homeGraphIndexRouteImport } from './routes/(home)/graph/index'
 import { Route as homeAuditIndexRouteImport } from './routes/(home)/audit/index'
@@ -19,11 +20,14 @@ import { Route as homeAuditIndexRouteImport } from './routes/(home)/audit/index'
 const homeRouteRoute = homeRouteRouteImport.update({
             id: '/(home)',getParentRoute: () => rootRouteImport
           }as any)
+const IndexRoute = IndexRouteImport.update({
+            id: '/',path: '/',getParentRoute: () => rootRouteImport
+          }as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
             id: '/auth/',path: '/auth/',getParentRoute: () => rootRouteImport
           }as any)
-const homeIndexRoute = homeIndexRouteImport.update({
-            id: '/',path: '/',getParentRoute: () => homeRouteRoute
+const homeRealtimeIndexRoute = homeRealtimeIndexRouteImport.update({
+            id: '/realtime/',path: '/realtime/',getParentRoute: () => homeRouteRoute
           }as any)
 const homeProfileIndexRoute = homeProfileIndexRouteImport.update({
             id: '/profile/',path: '/profile/',getParentRoute: () => homeRouteRoute
@@ -36,25 +40,25 @@ const homeAuditIndexRoute = homeAuditIndexRouteImport.update({
           }as any)
 
 export interface FileRoutesByFullPath {
-'/': typeof homeIndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/graph': typeof homeGraphIndexRoute,'/profile': typeof homeProfileIndexRoute
+'/': typeof IndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/graph': typeof homeGraphIndexRoute,'/profile': typeof homeProfileIndexRoute,'/realtime': typeof homeRealtimeIndexRoute
 }
 export interface FileRoutesByTo {
-'/': typeof homeIndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/graph': typeof homeGraphIndexRoute,'/profile': typeof homeProfileIndexRoute
+'/': typeof IndexRoute,'/auth': typeof AuthIndexRoute,'/audit': typeof homeAuditIndexRoute,'/graph': typeof homeGraphIndexRoute,'/profile': typeof homeProfileIndexRoute,'/realtime': typeof homeRealtimeIndexRoute
 }
 export interface FileRoutesById {
 '__root__': typeof rootRouteImport,
-'/(home)': typeof homeRouteRouteWithChildren,'/(home)/': typeof homeIndexRoute,'/auth/': typeof AuthIndexRoute,'/(home)/audit/': typeof homeAuditIndexRoute,'/(home)/graph/': typeof homeGraphIndexRoute,'/(home)/profile/': typeof homeProfileIndexRoute
+'/': typeof IndexRoute,'/(home)': typeof homeRouteRouteWithChildren,'/auth/': typeof AuthIndexRoute,'/(home)/audit/': typeof homeAuditIndexRoute,'/(home)/graph/': typeof homeGraphIndexRoute,'/(home)/profile/': typeof homeProfileIndexRoute,'/(home)/realtime/': typeof homeRealtimeIndexRoute
 }
 export interface FileRouteTypes {
 fileRoutesByFullPath: FileRoutesByFullPath
-fullPaths: '/'|'/auth'|'/audit'|'/graph'|'/profile'
+fullPaths: '/'|'/auth'|'/audit'|'/graph'|'/profile'|'/realtime'
 fileRoutesByTo: FileRoutesByTo
-to: '/'|'/auth'|'/audit'|'/graph'|'/profile'
-id: '__root__'|'/(home)'|'/(home)/'|'/auth/'|'/(home)/audit/'|'/(home)/graph/'|'/(home)/profile/'
+to: '/'|'/auth'|'/audit'|'/graph'|'/profile'|'/realtime'
+id: '__root__'|'/'|'/(home)'|'/auth/'|'/(home)/audit/'|'/(home)/graph/'|'/(home)/profile/'|'/(home)/realtime/'
 fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-homeRouteRoute: typeof homeRouteRouteWithChildren,AuthIndexRoute: typeof AuthIndexRoute
+IndexRoute: typeof IndexRoute,homeRouteRoute: typeof homeRouteRouteWithChildren,AuthIndexRoute: typeof AuthIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +70,13 @@ declare module '@tanstack/react-router' {
           preLoaderRoute: typeof homeRouteRouteImport
           parentRoute: typeof rootRouteImport
         }
+'/': {
+          id: '/'
+          path: '/'
+          fullPath: '/'
+          preLoaderRoute: typeof IndexRouteImport
+          parentRoute: typeof rootRouteImport
+        }
 '/auth/': {
           id: '/auth/'
           path: '/auth'
@@ -73,11 +84,11 @@ declare module '@tanstack/react-router' {
           preLoaderRoute: typeof AuthIndexRouteImport
           parentRoute: typeof rootRouteImport
         }
-'/(home)/': {
-          id: '/(home)/'
-          path: '/'
-          fullPath: '/'
-          preLoaderRoute: typeof homeIndexRouteImport
+'/(home)/realtime/': {
+          id: '/(home)/realtime/'
+          path: '/realtime'
+          fullPath: '/realtime'
+          preLoaderRoute: typeof homeRealtimeIndexRouteImport
           parentRoute: typeof homeRouteRoute
         }
 '/(home)/profile/': {
@@ -107,16 +118,16 @@ declare module '@tanstack/react-router' {
 
 
 interface homeRouteRouteChildren {
-  homeIndexRoute: typeof homeIndexRoute,homeAuditIndexRoute: typeof homeAuditIndexRoute,homeGraphIndexRoute: typeof homeGraphIndexRoute,homeProfileIndexRoute: typeof homeProfileIndexRoute
+  homeAuditIndexRoute: typeof homeAuditIndexRoute,homeGraphIndexRoute: typeof homeGraphIndexRoute,homeProfileIndexRoute: typeof homeProfileIndexRoute,homeRealtimeIndexRoute: typeof homeRealtimeIndexRoute
 }
 
 const homeRouteRouteChildren: homeRouteRouteChildren = {
-  homeIndexRoute: homeIndexRoute,homeAuditIndexRoute: homeAuditIndexRoute,homeGraphIndexRoute: homeGraphIndexRoute,homeProfileIndexRoute: homeProfileIndexRoute
+  homeAuditIndexRoute: homeAuditIndexRoute,homeGraphIndexRoute: homeGraphIndexRoute,homeProfileIndexRoute: homeProfileIndexRoute,homeRealtimeIndexRoute: homeRealtimeIndexRoute
 }
 
 const homeRouteRouteWithChildren = homeRouteRoute._addFileChildren(homeRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  homeRouteRoute: homeRouteRouteWithChildren,AuthIndexRoute: AuthIndexRoute
+  IndexRoute: IndexRoute,homeRouteRoute: homeRouteRouteWithChildren,AuthIndexRoute: AuthIndexRoute
 }
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()

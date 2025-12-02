@@ -8,8 +8,10 @@ import com.backend.jooq.Public
 import com.backend.jooq.enums.UsersRoleEnum
 import com.backend.jooq.indexes.IDX_USERS_UNIQUE_EMAIL
 import com.backend.jooq.keys.AUDITS__AUDITS_USERID_FKEY
+import com.backend.jooq.keys.TASKS__TASKS_ASSIGNEEID_FKEY
 import com.backend.jooq.keys.USERS_PKEY
 import com.backend.jooq.tables.Audits.AuditsPath
+import com.backend.jooq.tables.Tasks.TasksPath
 import com.backend.jooq.tables.records.UsersRecord
 
 import java.time.LocalDateTime
@@ -164,6 +166,21 @@ open class Users(
 
     val audits: AuditsPath
         get(): AuditsPath = audits()
+
+    private lateinit var _tasks: TasksPath
+
+    /**
+     * Get the implicit to-many join path to the <code>public.tasks</code> table
+     */
+    fun tasks(): TasksPath {
+        if (!this::_tasks.isInitialized)
+            _tasks = TasksPath(this, null, TASKS__TASKS_ASSIGNEEID_FKEY.inverseKey)
+
+        return _tasks;
+    }
+
+    val tasks: TasksPath
+        get(): TasksPath = tasks()
     override fun `as`(alias: String): Users = Users(DSL.name(alias), this)
     override fun `as`(alias: Name): Users = Users(alias, this)
     override fun `as`(alias: Table<*>): Users = Users(alias.qualifiedName, this)

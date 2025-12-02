@@ -36,6 +36,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/updateTask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["updateTask"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/logout": {
         parameters: {
             query?: never;
@@ -100,6 +116,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/getAllTasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["getAllTasks"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/getAllAudits": {
         parameters: {
             query?: never;
@@ -126,6 +158,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["findUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/findTask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["findTask"];
         delete?: never;
         options?: never;
         head?: never;
@@ -164,6 +212,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/deleteTask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["deleteTask"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/createUser": {
         parameters: {
             query?: never;
@@ -174,6 +238,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["createUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/createTask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["createTask"];
         delete?: never;
         options?: never;
         head?: never;
@@ -204,6 +284,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["syncUsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/syncTasks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["syncTasks"];
         put?: never;
         post?: never;
         delete?: never;
@@ -261,6 +357,18 @@ export interface components {
             /** @enum {string} */
             role?: "USER" | "ADMIN";
         };
+        UpdateTaskPayload: {
+            /** Format: uuid */
+            id: string;
+            title?: string;
+            description?: string;
+            /** @enum {string} */
+            status?: "TODO" | "IN_PROGRESS" | "DONE";
+            /** @enum {string} */
+            priority?: "LOW" | "MEDIUM" | "HIGH";
+            /** Format: uuid */
+            assigneeId?: string;
+        };
         LoginPayload: {
             email: string;
             password: string;
@@ -272,6 +380,23 @@ export interface components {
             password: string;
             /** @enum {string} */
             role: "USER" | "ADMIN";
+            deleted: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            modifiedAt: string;
+        };
+        Task: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            description?: string;
+            /** @enum {string} */
+            status: "TODO" | "IN_PROGRESS" | "DONE";
+            /** @enum {string} */
+            priority: "LOW" | "MEDIUM" | "HIGH";
+            /** Format: uuid */
+            assigneeId?: string;
             deleted: boolean;
             /** Format: date-time */
             createdAt: string;
@@ -294,6 +419,10 @@ export interface components {
             /** Format: uuid */
             id: string;
         };
+        FindTaskPayload: {
+            /** Format: uuid */
+            id: string;
+        };
         FindAuditPayload: {
             /** Format: uuid */
             id: string;
@@ -302,11 +431,25 @@ export interface components {
             /** Format: uuid */
             id: string;
         };
+        DeleteTaskPayload: {
+            /** Format: uuid */
+            id: string;
+        };
         CreateUserPayload: {
             email: string;
             password: string;
             /** @enum {string} */
             role: "USER" | "ADMIN";
+        };
+        CreateTaskPayload: {
+            title: string;
+            description?: string;
+            /** @enum {string} */
+            status: "TODO" | "IN_PROGRESS" | "DONE";
+            /** @enum {string} */
+            priority: "LOW" | "MEDIUM" | "HIGH";
+            /** Format: uuid */
+            assigneeId?: string;
         };
         StreamingResponseBody: Record<string, never>;
     };
@@ -352,6 +495,28 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["UpdateUserPayload"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTaskPayload"];
             };
         };
         responses: {
@@ -446,6 +611,26 @@ export interface operations {
             };
         };
     };
+    getAllTasks: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Task"][];
+                };
+            };
+        };
+    };
     getAllAudits: {
         parameters: {
             query?: never;
@@ -486,6 +671,30 @@ export interface operations {
                 };
                 content: {
                     "*/*": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    findTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FindTaskPayload"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Task"];
                 };
             };
         };
@@ -536,6 +745,28 @@ export interface operations {
             };
         };
     };
+    deleteTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteTaskPayload"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     createUser: {
         parameters: {
             query?: never;
@@ -546,6 +777,30 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["CreateUserPayload"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": string;
+                };
+            };
+        };
+    };
+    createTask: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTaskPayload"];
             };
         };
         responses: {
@@ -579,6 +834,30 @@ export interface operations {
         };
     };
     syncUsers: {
+        parameters: {
+            query: {
+                params: {
+                    [key: string]: string;
+                };
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["StreamingResponseBody"];
+                };
+            };
+        };
+    };
+    syncTasks: {
         parameters: {
             query: {
                 params: {

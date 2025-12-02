@@ -5,6 +5,7 @@ package com.backend.jooq.indexes
 
 
 import com.backend.jooq.tables.Audits
+import com.backend.jooq.tables.Tasks
 import com.backend.jooq.tables.Users
 
 import org.jooq.Index
@@ -18,4 +19,7 @@ import org.jooq.impl.Internal
 // -------------------------------------------------------------------------
 
 val IDX_AUDITS_TIMESTAMP: Index = Internal.createIndex(DSL.name("idx_audits_timestamp"), Audits.AUDITS, arrayOf(Audits.AUDITS.timestamp.desc()), false)
+val IDX_TASKS_ASSIGNEE: Index = Internal.createIndex(DSL.name("idx_tasks_assignee"), Tasks.TASKS, arrayOf(Tasks.TASKS.assigneeId), false)
+val IDX_TASKS_PRIORITY: Index = Internal.createIndex(DSL.name("idx_tasks_priority"), Tasks.TASKS, arrayOf(Tasks.TASKS.priority), false)
+val IDX_TASKS_STATUS: Index = Internal.createIndex(DSL.name("idx_tasks_status"), Tasks.TASKS, arrayOf(Tasks.TASKS.status), false)
 val IDX_USERS_UNIQUE_EMAIL: Index = Internal.createIndex(DSL.name("idx_users_unique_email"), Users.USERS, arrayOf(Users.USERS.email), true)

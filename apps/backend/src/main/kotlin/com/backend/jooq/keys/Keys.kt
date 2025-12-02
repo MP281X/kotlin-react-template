@@ -5,8 +5,10 @@ package com.backend.jooq.keys
 
 
 import com.backend.jooq.tables.Audits
+import com.backend.jooq.tables.Tasks
 import com.backend.jooq.tables.Users
 import com.backend.jooq.tables.records.AuditsRecord
+import com.backend.jooq.tables.records.TasksRecord
 import com.backend.jooq.tables.records.UsersRecord
 
 import org.jooq.ForeignKey
@@ -21,6 +23,7 @@ import org.jooq.impl.Internal
 // -------------------------------------------------------------------------
 
 val AUDITS_PKEY: UniqueKey<AuditsRecord> = Internal.createUniqueKey(Audits.AUDITS, DSL.name("audits_pkey"), arrayOf(Audits.AUDITS.id), true)
+val TASKS_PKEY: UniqueKey<TasksRecord> = Internal.createUniqueKey(Tasks.TASKS, DSL.name("tasks_pkey"), arrayOf(Tasks.TASKS.id), true)
 val USERS_PKEY: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, DSL.name("users_pkey"), arrayOf(Users.USERS.id), true)
 
 // -------------------------------------------------------------------------
@@ -28,3 +31,4 @@ val USERS_PKEY: UniqueKey<UsersRecord> = Internal.createUniqueKey(Users.USERS, D
 // -------------------------------------------------------------------------
 
 val AUDITS__AUDITS_USERID_FKEY: ForeignKey<AuditsRecord, UsersRecord> = Internal.createForeignKey(Audits.AUDITS, DSL.name("audits_userId_fkey"), arrayOf(Audits.AUDITS.userId), com.backend.jooq.keys.USERS_PKEY, arrayOf(Users.USERS.id), true)
+val TASKS__TASKS_ASSIGNEEID_FKEY: ForeignKey<TasksRecord, UsersRecord> = Internal.createForeignKey(Tasks.TASKS, DSL.name("tasks_assigneeId_fkey"), arrayOf(Tasks.TASKS.assigneeId), com.backend.jooq.keys.USERS_PKEY, arrayOf(Users.USERS.id), true)

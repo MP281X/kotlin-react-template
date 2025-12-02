@@ -36,26 +36,37 @@ CREATE TABLE audits (
 -- Indexes for audits table
 CREATE INDEX idx_audits_timestamp ON audits("timestamp" DESC);
 
--- Insert sample audit entries
-INSERT INTO audits ("message", "payload", "result", "userId", "timestamp")
-SELECT
-    'createUser',
-    '{"email": "admin", "role": "ADMIN"}'::jsonb,
-    jsonb_build_object('id', id, 'email', email, 'role', role),
-    id,
-    "createdAt"
-FROM users WHERE email = 'admin@gmail.com';
+-- Enums for tasks
+CREATE TYPE tasks_status_enum AS ENUM ('TODO', 'IN_PROGRESS', 'DONE');
+CREATE TYPE tasks_priority_enum AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
--- Generate many audit logs for testing virtualization
-INSERT INTO audits ("message", "payload", "result", "userId", "timestamp")
+CREATE TABLE tasks (
+    -- primary keys
+    "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "title" TEXT NOT NULL,
+    -- metadata
+    "description" TEXT,
+    "status" tasks_status_enum NOT NULL DEFAULT 'TODO',
+    "priority" tasks_priority_enum NOT NULL DEFAULT 'MEDIUM',
+    -- foreign keys
+    "assigneeId" UUID REFERENCES users("id"),
+    -- audit
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+    "modifiedAt" TIMESTAMP NOT NULL DEFAULT now()
+);
+
+-- Indexes for tasks table
+CREATE INDEX idx_tasks_status ON tasks("status") WHERE deleted = false;
+CREATE INDEX idx_tasks_priority ON tasks("priority") WHERE deleted = false;
+CREATE INDEX idx_tasks_assignee ON tasks("assigneeId") WHERE deleted = false;
+
+-- Insert sample tasks
+INSERT INTO tasks ("title", "description", "status", "priority", "assigneeId")
 SELECT
-    (ARRAY['login', 'logout', 'updateProfile', 'changePassword', 'viewDashboard', 'exportData', 'importData', 'deleteRecord', 'createRecord', 'updateRecord'])[1 + floor(random() * 10)::int],
-    jsonb_build_object(
-        'ip', '192.168.' || floor(random() * 255)::int || '.' || floor(random() * 255)::int,
-        'userAgent', (ARRAY['Chrome/120', 'Firefox/121', 'Safari/17', 'Edge/120'])[1 + floor(random() * 4)::int],
-        'requestId', gen_random_uuid()
-    ),
-    CASE WHEN random() > 0.1 THEN jsonb_build_object('success', true) ELSE jsonb_build_object('success', false, 'error', 'Operation failed') END,
-    (SELECT id FROM users WHERE email = 'admin@gmail.com'),
-    now() - (random() * interval '30 days')
-FROM generate_series(1, 1000);
+    'Task ' || i,
+    CASE WHEN random() > 0.3 THEN 'Description for task ' || i ELSE NULL END,
+    (ARRAY['TODO', 'IN_PROGRESS', 'DONE']::tasks_status_enum[])[1 + floor(random() * 3)::int],
+    (ARRAY['LOW', 'MEDIUM', 'HIGH']::tasks_priority_enum[])[1 + floor(random() * 3)::int],
+    CASE WHEN random() > 0.5 THEN (SELECT id FROM users WHERE email = 'admin@gmail.com') ELSE NULL END
+FROM generate_series(1, 10) AS i;

@@ -5,6 +5,7 @@ package com.backend.jooq
 
 
 import com.backend.jooq.tables.Audits
+import com.backend.jooq.tables.Tasks
 import com.backend.jooq.tables.Users
 
 import kotlin.collections.List
@@ -33,6 +34,11 @@ open class Public : SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
     val AUDITS: Audits get() = Audits.AUDITS
 
     /**
+     * The table <code>public.tasks</code>.
+     */
+    val TASKS: Tasks get() = Tasks.TASKS
+
+    /**
      * The table <code>public.users</code>.
      */
     val USERS: Users get() = Users.USERS
@@ -41,6 +47,7 @@ open class Public : SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
 
     override fun getTables(): List<Table<*>> = listOf(
         Audits.AUDITS,
+        Tasks.TASKS,
         Users.USERS
     )
 }

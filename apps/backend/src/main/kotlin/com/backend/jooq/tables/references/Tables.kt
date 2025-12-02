@@ -5,6 +5,7 @@ package com.backend.jooq.tables.references
 
 
 import com.backend.jooq.tables.Audits
+import com.backend.jooq.tables.Tasks
 import com.backend.jooq.tables.Users
 
 
@@ -13,6 +14,11 @@ import com.backend.jooq.tables.Users
  * The table <code>public.audits</code>.
  */
 val AUDITS: Audits = Audits.AUDITS
+
+/**
+ * The table <code>public.tasks</code>.
+ */
+val TASKS: Tasks = Tasks.TASKS
 
 /**
  * The table <code>public.users</code>.
