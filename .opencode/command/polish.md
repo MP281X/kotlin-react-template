@@ -1,64 +1,83 @@
 ---
 description: Refactor code for clarity, simplicity, and best practices
-agent: build
 ---
 
+Target (optional — file path, folder, or feature description; defaults to last edited files):
 $ARGUMENTS
-
-Activate Polish mode. Analyze step-by-step using only verified facts. Do not assume or speculate.
 
 ## Process
 
-### 1. Identify Target
-- If $ARGUMENTS contains a file path, read that file
-- If $ARGUMENTS describes code, find it using glob/grep
-- If empty, refactor the most recently edited/created file in this session
+1. **Identify target** — If target is a file/folder path, read it. If it describes a feature, find related files using glob/grep. If empty, refactor the most recently edited files in this session.
 
-### 2. Gather Context (parallel)
-Run these in parallel:
-- **Read target file** and adjacent files in the same directory
-- **Search for similar patterns** in the codebase using grep (find existing conventions)
-- **Fetch documentation** using Task tool:
-  - Effect-ts code → `subagent_type: "effect-ts"`
-  - Everything else → `subagent_type: "fetch-docs"`
-  - Query: specific APIs/patterns used in the target code
+2. **Gather context** (parallel)
+   - Read target file and adjacent files in the same directory
+   - Search for similar patterns in the codebase using grep
+   - Fetch documentation: Effect-ts code → `effect-ts` agent, everything else → `fetch-docs` agent
 
-### 3. Refactor Loop (max 3 passes)
+3. **Refactor loop** (max 3 passes)
+   - **Analyze** (priority order): correctness → simplicity → readability → consistency → type safety
+   - **Apply**: remove before adding, flatten nesting, reuse project patterns, match naming conventions
+   - **Keep inline**: prefer inline code unless extraction significantly improves readability — avoid forcing readers to jump between files/functions
+   - **Re-read**: look for new opportunities. Exit if none found.
 
-For each pass:
+4. **Review diff** — Run `git diff`, verify each change is justified, revert anything without clear value.
 
-**3a. Analyze** (in priority order)
-1. **Correctness** - Bugs, missing error handling, edge cases
-2. **Simplicity** - Dead code, over-abstraction, unnecessary indirection, obvious comments
-3. **Readability** - Unclear names, deep nesting, implicit behavior
-4. **Consistency** - Deviations from project patterns, defensive try/catch in trusted paths
-5. **Type safety** - `any` casts, missing generics, implicit types
-
-**3b. Apply changes**
-- Remove before adding
-- Flatten nesting (early returns, guard clauses)
-- Reuse existing project utilities/patterns
-- Match naming conventions from the codebase
-
-**3c. Re-read the modified code**
-- Look for new improvement opportunities exposed by previous changes
-- If no improvements found → exit loop
-- If improvements found → continue to next pass
-
-### 4. Review Diff
-- Run `git diff` on the modified files
-- Verify each change is justified and improves the code
-- Revert any changes that don't provide clear value
-
-### 5. Validate
-- Detect package manager from lockfile (`pnpm-lock.yaml` → pnpm, `bun.lockb` → bun)
-- Run `pnpm/bun run fix` to format and auto-fix linting errors
-- Run `pnpm/bun run check` to lint and type-check
-- If check fails, fix issues and re-run until passing
+5. **Validate** — Run `pnpm run fix` then `pnpm run check`. Fix issues until passing.
 
 ## Output
-After refactoring, summarize:
-- **Passes completed** - How many iterations and why it stopped
-- **Changes made** - Bullet list of what changed and why
-- **Docs referenced** - Sources that informed the refactor
-- **Validation result** - Output from `run check`
+- **Passes** — How many iterations and why it stopped
+- **Changes** — What changed and why
+- **Docs** — Sources referenced
+- **Validation** — Output from `run check`
+
+## Examples
+
+Flatten nested conditionals:
+```ts
+// before
+if (user !== null && user !== undefined) {
+  if (user.isActive === true) {
+    return user.name
+  }
+}
+return "Unknown"
+
+// after
+return user?.isActive ? user.name : "Unknown"
+```
+
+Early return instead of deep nesting:
+```ts
+// before
+function process(data: Data) {
+  if (data) {
+    if (data.isValid) {
+      if (data.items.length > 0) {
+        return doWork(data)
+      }
+    }
+  }
+  return null
+}
+
+// after
+function process(data: Data) {
+  if (!data?.isValid || data.items.length === 0) return null
+  return doWork(data)
+}
+```
+
+Simplify verbose logic:
+```ts
+// before
+let result: string
+if (value === true) {
+  result = "yes"
+} else {
+  result = "no"
+}
+return result
+
+// after
+return value ? "yes" : "no"
+```

@@ -1,16 +1,21 @@
 import { FetchHttpClient } from '@effect/platform'
 import { Effect, Layer, Logger, LogLevel, pipe } from 'effect'
 
-// configure global layers and runtime used in all the projects
+/** Shared layers injected into all Effects across the monorepo. */
 export type BaseLayers = Layer.Layer.Success<typeof BaseLayers>
 export const BaseLayers = Layer.mergeAll(
-	// base layers that are always injected
 	Layer.scope,
 	Logger.pretty,
 	Logger.minimumLogLevel(LogLevel.Debug),
 	FetchHttpClient.layer
 )
 
+/**
+ * Wraps an Effect to make it `await`-able while auto-providing BaseLayers.
+ *
+ * @example
+ * const result = await AwaitableEffect(Effect.succeed(42))
+ */
 export type AwaitableEffect<T> = Effect.Effect<T> & PromiseLike<T>
 export function AwaitableEffect<A, E, R>(effect: Effect.Effect<A, E, R>) {
 	const program = pipe(effect, Effect.provide(BaseLayers))

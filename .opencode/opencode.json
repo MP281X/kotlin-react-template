@@ -6,7 +6,7 @@
 			"type": "local",
 			"command": ["npx", "-y", "shadcn@latest", "mcp"]
 		},
-    "context7": {
+		"context7": {
 			"type": "local",
 			"command": ["npx", "-y", "@upstash/context7-mcp@latest"]
 		},
@@ -17,9 +17,9 @@
 	},
 
 	"tools": {
-    "shadcn_*": false,
-    "grep_*": false,
+		"shadcn_*": false,
+		"grep_*": false,
 		"effect_*": false,
-		"context7_*": false,
+		"context7_*": false
 	}
 }
