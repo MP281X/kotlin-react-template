@@ -17,7 +17,7 @@
 
 	"dependencies": {
 		"effect": "latest",
-		"@effect/platform": "^0.92"
+		"@effect/platform": "latest"
 	},
 
 	"devDependencies": {

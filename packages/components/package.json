@@ -1,0 +1,44 @@
+{
+	"type": "module",
+	"name": "@/components",
+
+	"imports": {
+		"#lib/*": "./src/lib/*",
+		"#hooks/*": "./src/hooks/*",
+		"#components/*": "./src/components/*"
+	},
+
+	"exports": {
+		"./*": "./src/components/*.tsx",
+		"./theme.css": "./src/theme.css"
+	},
+
+	"scripts": {
+		"fix": "biome check --write --unsafe",
+		"check": "tsc --noEmit && biome check"
+	},
+
+	"dependencies": {
+		"cmdk": "latest",
+		"sonner": "latest",
+		"lucide-react": "latest",
+
+		"radix-ui": "latest",
+		"@radix-ui/react-use-controllable-state": "latest",
+
+		"@tanstack/react-form": "latest",
+		"@tanstack/react-table": "latest",
+		"@tanstack/react-virtual": "latest",
+
+		"clsx": "latest",
+		"tailwind-merge": "latest",
+		"tw-animate-css": "latest",
+		"class-variance-authority": "latest"
+	},
+	"peerDependencies": {
+		"react": "^19",
+		"react-dom": "^19",
+
+		"tailwindcss": "^4"
+	}
+}

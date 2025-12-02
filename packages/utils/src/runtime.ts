@@ -26,6 +26,7 @@ export function runEffectConstructor<Layers, ER>(runtime: ManagedRuntime.Managed
 export type AwaitableEffect<T> = Effect.Effect<T> & PromiseLike<T>
 export function AwaitableEffect<A, E, R>(effect: Effect.Effect<A, E, R>) {
 	const program = pipe(effect, Effect.provide(BaseLayers))
+	// biome-ignore lint/style/noRestrictedGlobals: special case
 	return Object.assign(program, {
 		// biome-ignore lint/suspicious/noThenProperty: thenable
 		then: (resolve: (v: any) => void, reject: (e: any) => void) => {

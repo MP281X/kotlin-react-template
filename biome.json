@@ -12,6 +12,7 @@
 			"suspicious": {
 				"noExplicitAny": "off",
 				"noConfusingVoidType": "off",
+				"noAssignInExpressions": "off",
 				"noShadowRestrictedNames": "off"
 			},
 			"style": {
@@ -26,10 +27,13 @@
 				"useConsistentArrayType": { "level": "error", "options": { "syntax": "shorthand" } },
 				"noRestrictedGlobals": {
 					"level": "error",
-					"options": { "deniedGlobals": { "Array": "", "String": "" } }
+					"options": {
+						"deniedGlobals": { "Number": "", "String": "", "Object": "", "Array": "", "global": "", "location": "" }
+					}
 				}
 			},
 			"correctness": {
+				"useYield": "off",
 				"noChildrenProp": "off",
 				"noUnusedImports": "off",
 				"noUnusedVariables": "off",
@@ -65,7 +69,9 @@
 	},
 
 	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
-	"files": { "includes": ["**/*.ts", "**/*.tsx", "**/*.css", "**/*.json", "!**/*.d.ts", "!**/*.gen.ts"] },
+	"files": {
+		"includes": ["**/*.ts", "**/*.tsx", "**/*.css", "**/*.json", "!**/*.d.ts", "!**/*.gen.ts"]
+	},
 
 	"overrides": [
 		{
@@ -74,3 +80,4 @@
 		}
 	]
 }
+

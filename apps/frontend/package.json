@@ -28,9 +28,9 @@
 		"@tanstack/react-router": "latest",
 		"@tanstack/router-plugin": "latest",
 
-		"@/ui": "workspace:*",
 		"@/rpc": "workspace:*",
-		"@/utils": "workspace:*"
+		"@/utils": "workspace:*",
+		"@/components": "workspace:*"
 	},
 	"devDependencies": {
 		"tailwindcss": "latest",
