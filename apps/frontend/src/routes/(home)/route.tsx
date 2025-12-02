@@ -1,7 +1,7 @@
 import { Result, useAtomSet, useAtomValue } from '@effect-atom/atom-react'
-import { createFileRoute, Link, Navigate, Outlet, useNavigate, useRouterState } from '@tanstack/react-router'
+import { createFileRoute, Link, Navigate, Outlet, useMatches, useNavigate } from '@tanstack/react-router'
 import { Match } from 'effect'
-import { HomeIcon, LogOutIcon, UserIcon } from 'lucide-react'
+import { ClipboardListIcon, HomeIcon, LogOutIcon, UserIcon } from 'lucide-react'
 import { AtomRuntime } from '#lib/runtime.ts'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -66,6 +66,14 @@ function Layout() {
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton asChild tooltip="Audits">
+											<Link to="/audit">
+												<ClipboardListIcon />
+												<span>Audits</span>
+											</Link>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
 								</SidebarMenu>
 							</SidebarGroupContent>
 						</SidebarGroup>
@@ -110,10 +118,11 @@ function Layout() {
 }
 
 function Header() {
-	const pathname = useRouterState({ select: s => s.location.pathname })
+	const matches = useMatches()
 
-	const title = Match.value(pathname).pipe(
-		Match.when('/profile', () => 'Profile'),
+	const title = Match.value(matches.at(-1)?.routeId).pipe(
+		Match.when('/(home)/profile/', () => 'Profile'),
+		Match.when('/(home)/audit/', () => 'Audits'),
 		Match.orElse(() => 'kotlin-react-template')
 	)
 

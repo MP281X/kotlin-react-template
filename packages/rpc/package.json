@@ -6,8 +6,7 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"exports": {
-		".": { "import": "./src/rpc.ts" },
-		"./sync": { "import": "./src/sync.ts" }
+		".": { "import": "./src/index.ts" }
 	},
 
 	"scripts": {
