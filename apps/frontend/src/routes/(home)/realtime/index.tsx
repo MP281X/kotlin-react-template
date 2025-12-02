@@ -90,7 +90,7 @@ function CreateTaskForm(props: { onClose: () => void }) {
 					<form.AppField name="title" children={field => <field.TextField />} />
 					<form.AppField name="description" children={field => <field.TextAreaField />} />
 					<div className="flex justify-end gap-2">
-						<Button variant="outline" onClick={props.onClose}>
+						<Button type="button" variant="outline" onClick={props.onClose}>
 							Cancel
 						</Button>
 						<form.SubmitButton>Create</form.SubmitButton>

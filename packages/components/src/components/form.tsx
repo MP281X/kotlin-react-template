@@ -64,17 +64,7 @@ function SubmitButton(props: { children: React.ReactNode }) {
 			})}
 		>
 			{({ isSubmitting, canSubmit, isTouched }) => (
-				<Button
-					disabled={isSubmitting || !canSubmit || !isTouched}
-					onClick={async () => {
-						try {
-							await form.handleSubmit()
-							form.reset()
-						} catch (e) {
-							return errorToast(e)
-						}
-					}}
-				>
+				<Button type="submit" disabled={isSubmitting || !canSubmit || !isTouched}>
 					{isSubmitting && <Spinner />}
 					{props.children}
 				</Button>
@@ -246,6 +236,7 @@ export declare namespace Form {
 	export type Props = {
 		form: {
 			handleSubmit: () => Promise<void>
+			reset: () => void
 			AppForm: React.ComponentType<{ children?: React.ReactNode }>
 		}
 		className?: string
@@ -259,9 +250,14 @@ export function Form(props: Form.Props) {
 		<props.form.AppForm>
 			<form
 				className={cn('flex flex-1 items-center justify-center', props.className)}
-				onSubmit={e => {
+				onSubmit={async e => {
 					e.preventDefault()
-					void props.form.handleSubmit()
+					try {
+						await props.form.handleSubmit()
+						props.form.reset()
+					} catch (err) {
+						errorToast(err)
+					}
 				}}
 				children={props.children}
 			/>

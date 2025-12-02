@@ -78,9 +78,11 @@ function CreateUserForm(props: { onClose: () => void }) {
 				<Form form={form} className="flex-col items-stretch gap-3">
 					<form.AppField name="email" children={field => <field.EmailField />} />
 					<form.AppField name="password" children={field => <field.PasswordField />} />
-					<RoleSelector value={form.state.values.role} onChange={role => form.setFieldValue('role', role)} />
+					<form.Subscribe selector={state => state.values.role}>
+						{role => <RoleSelector value={role} onChange={role => form.setFieldValue('role', role)} />}
+					</form.Subscribe>
 					<div className="flex justify-end gap-2">
-						<Button variant="outline" onClick={props.onClose}>
+						<Button type="button" variant="outline" onClick={props.onClose}>
 							Cancel
 						</Button>
 						<form.SubmitButton>Create</form.SubmitButton>
@@ -169,9 +171,11 @@ function EditUserSheet(props: { user: sync.Table['users']; isOpen: boolean; onCl
 
 				<Form form={form} className="flex-1 flex-col items-stretch gap-4 overflow-y-auto px-4">
 					<form.AppField name="password" children={field => <field.PasswordField />} />
-					<RoleSelector value={form.state.values.role} onChange={role => form.setFieldValue('role', role)} />
+					<form.Subscribe selector={state => state.values.role}>
+						{role => <RoleSelector value={role} onChange={role => form.setFieldValue('role', role)} />}
+					</form.Subscribe>
 					<SheetFooter className="mt-auto p-0">
-						<Button variant="outline" onClick={props.onClose}>
+						<Button type="button" variant="outline" onClick={props.onClose}>
 							Cancel
 						</Button>
 						<form.SubmitButton>Save</form.SubmitButton>
