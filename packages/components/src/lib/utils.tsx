@@ -32,10 +32,7 @@ export const formatTimestamp = (timestamp: string | Date) => {
 }
 
 const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
-export const isUUID = (value: unknown): value is string => {
-	return Predicate.isString(value) && uuidPattern.test(value)
-}
-export const formatUUID = (uuid: string) => {
+const formatUUID = (uuid: string) => {
 	return uuid.split('-')[0] || ''
 }
 

@@ -5,7 +5,7 @@ import org.jooq.JSONB
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.support.TransactionSynchronizationAdapter
+import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.*
 
@@ -19,7 +19,7 @@ class AuditsFacade(private val auditsRepository: AuditsRepository, private val o
         userId: UUID?
     ) {
         TransactionSynchronizationManager.registerSynchronization(
-            object : TransactionSynchronizationAdapter() {
+            object : TransactionSynchronization {
                 override fun afterCommit() {
                     val payloadJson = payload?.let { objectMapper.writeValueAsString(it) } ?: "{}"
                     val resultJson = result?.let { objectMapper.writeValueAsString(it) }
@@ -32,7 +32,7 @@ class AuditsFacade(private val auditsRepository: AuditsRepository, private val o
 
     @Cacheable(sync = true, value = ["audits"], key = "#id")
     @Transactional(readOnly = true)
-    fun find(id: java.util.UUID): Audit? {
+    fun find(id: UUID): Audit? {
         return auditsRepository.find(id)
     }
 

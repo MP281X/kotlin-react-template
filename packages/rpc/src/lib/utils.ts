@@ -6,7 +6,6 @@ export type Entities = components['schemas']
  * TypeScript utility to expand types and remove the never type
  * @example Expand<{ a: string; b: never }> -> { a: string }
  */
-
 export type Expand<T> = T extends (...args: any[]) => any
 	? T
 	: T extends (infer U)[]

@@ -1,16 +1,12 @@
 package com.backend.core.auth
 
-import com.backend.core.audits.Audited
 import com.backend.core.users.FindUser
 import com.backend.core.users.User
 import com.backend.core.users.UsersFacade
 import com.backend.web.InvalidCredentialsException
 import com.backend.web.ResourceNotFoundException
 import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
-import jakarta.servlet.http.HttpSession
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestAttribute
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.util.*

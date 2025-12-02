@@ -71,13 +71,6 @@ export declare namespace rpc {
 	/** Extract result type for rpc hook (already expanded) */
 	export type Result<Method extends callRpc.Methods> = callRpc.Result<Method>
 
-	/** UTILS */
-	export namespace db {
-		export type Entities = { [K in rpc.Methods as K extends `find${infer Entity}` ? Entity : never]: rpc.Result<K> }
-
-		export type PrimaryKeys<Entity extends keyof Entities> = Exclude<rpc.Payload<`find${Entity}`>, { id: string }>
-	}
-
 	/** Base return type for all RPC methods */
 	type RpcResponse<Method extends callRpc.Methods> =
 		// promise
