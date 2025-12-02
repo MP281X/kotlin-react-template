@@ -1,8 +1,4 @@
-/**
- * Create a cached proxy from a single-argument factory function.
- *
- * The runtime uses a Proxy and caches the computed value per-property on first access.
- */
+/** Caches computed values by property key to avoid redundant factory calls. */
 export function createCachedProxy<Obj extends Record<string, unknown>>(fn: (key: keyof Obj) => any): Obj {
 	const cache = new Map<PropertyKey, any>()
 

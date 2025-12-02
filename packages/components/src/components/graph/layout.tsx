@@ -16,6 +16,7 @@ export declare namespace Layout {
 	}
 }
 
+/** Calculates node positions using dagre for automatic graph layout. */
 export function getLayoutedElements(props: Layout.Props): Layout.Result {
 	const dagreGraph = new dagre.graphlib.Graph()
 	dagreGraph.setGraph({

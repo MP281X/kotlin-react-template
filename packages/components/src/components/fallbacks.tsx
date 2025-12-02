@@ -2,6 +2,7 @@ import { OctagonAlert } from 'lucide-react'
 import { Spinner } from '#components/ui/spinner.tsx'
 import { formatError } from '#lib/utils.tsx'
 
+/** Renders a 404 error page with styling for route-level not found states. */
 export function NotFound() {
 	return (
 		<main className="flex flex-1 items-center justify-center px-4 sm:px-0">
@@ -16,6 +17,7 @@ export function NotFound() {
 	)
 }
 
+/** Renders a centered spinner for route-level loading states. */
 export function Loading() {
 	return (
 		<main className="flex flex-1 items-center justify-center">
@@ -24,6 +26,7 @@ export function Loading() {
 	)
 }
 
+/** Renders an error message with tap-to-retry for route-level error boundaries. */
 export function Error(props: { error: Error; reset: () => void }) {
 	const message = formatError(props.error)
 

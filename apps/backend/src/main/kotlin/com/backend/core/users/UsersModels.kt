@@ -17,6 +17,7 @@ data class User(
     val modifiedAt: LocalDateTime
 )
 
+/** Converts a jOOQ record to a domain model. */
 fun UsersRecord.toDto(): User {
     return User(
         id = this.id!!,
@@ -35,6 +36,7 @@ data class CreateUser(
     val role: UsersRoleEnum
 )
 
+/** Converts create payload to a jOOQ record for insertion. */
 fun CreateUser.toRecord(): UsersRecord {
     return UsersRecord(
         email = this.email,
@@ -43,6 +45,7 @@ fun CreateUser.toRecord(): UsersRecord {
     )
 }
 
+/** Type-safe filter for user queries. */
 sealed class FindUser {
     data class ById(val id: UUID) : FindUser()
 
@@ -57,6 +60,7 @@ data class UpdateUser(
     val role: UsersRoleEnum? = null
 )
 
+/** Converts update payload to a jOOQ record with only changed fields. */
 fun UpdateUser.toRecord(): UsersRecord {
     val record = Users.USERS.newRecord()
     this.password?.let { record.password = it }

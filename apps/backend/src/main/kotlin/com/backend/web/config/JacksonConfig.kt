@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Primary
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/** Configures Jackson for Kotlin, jOOQ JSONB, and PostgreSQL timestamp formats. */
 @Configuration
 class JacksonConfig {
     @Bean
@@ -60,6 +61,7 @@ class JacksonConfig {
     }
 }
 
+/** Serializes jOOQ JSONB to raw JSON in responses. */
 class JsonbSerializer : JsonSerializer<JSONB>() {
     override fun serialize(value: JSONB, gen: JsonGenerator, provider: SerializerProvider) {
         val stringValue = value.toString()
@@ -67,6 +69,7 @@ class JsonbSerializer : JsonSerializer<JSONB>() {
     }
 }
 
+/** Deserializes JSON strings into jOOQ JSONB values. */
 class JsonbDeserializer : JsonDeserializer<JSONB>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): JSONB {
         val stringValue = p.text

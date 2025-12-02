@@ -55,6 +55,7 @@ class TasksRepository(
         if (updatedRows != 1) throw ResourceNotFoundException("task '$id' not found")
     }
 
+    /** Soft-deletes a task by setting deleted flag (preserves audit trail). */
     @Audited(message = "deleted task '#{#id}'")
     fun delete(id: UUID) {
         val updatedRows =

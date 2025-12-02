@@ -9,8 +9,10 @@ import org.springframework.web.context.annotation.RequestScope
 import java.time.Duration
 import java.util.*
 
+/** Holds authenticated user data stored in HTTP session. */
 data class AuthSessionData(val userId: UUID, val email: String, val role: UsersRoleEnum?)
 
+/** Provides request-scoped access to the current user's session data. */
 @Component
 @RequestScope
 class AuthRequestContext {
@@ -19,6 +21,7 @@ class AuthRequestContext {
     var role: UsersRoleEnum? = null
 }
 
+/** Manages HTTP session lifecycle for authentication. */
 @Component
 class AuthSessionsManager(
     @param:Value("\${auth.sessions.ttl}") private var sessionTTL: Duration,

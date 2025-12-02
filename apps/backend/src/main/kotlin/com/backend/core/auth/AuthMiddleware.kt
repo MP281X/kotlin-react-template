@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 
+/** Marks endpoints that require authentication, with optional role restrictions. */
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Secured(val roles: Array<UsersRoleEnum> = [])
 
+/** Intercepts requests to enforce authentication and role-based access control. */
 @Component
 class AuthMiddleware(
     private val sessionsManager: AuthSessionsManager

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
 
 private lateinit var globalCacheManager: CacheManager
 
+/** Injects the CacheManager into a global variable for use outside Spring context. */
 @Component
 private class GlobalCacheManagerInjector(cm: CacheManager) {
     init {
@@ -18,6 +19,7 @@ private class GlobalCacheManagerInjector(cm: CacheManager) {
     }
 }
 
+/** Clears all Spring-managed caches (used during test cleanup or data reset). */
 fun clearAllCaches() {
     if (!::globalCacheManager.isInitialized) return
     globalCacheManager.cacheNames.forEach { cacheName -> globalCacheManager.getCache(cacheName)?.clear() }

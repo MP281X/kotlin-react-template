@@ -12,6 +12,7 @@ import java.util.*
 @Component
 @CacheConfig(cacheNames = ["users"])
 class UsersFacade(private val usersRepository: UsersRepository) {
+    /** Creates a user with bcrypt-hashed password. */
     @Transactional
     @Cacheable(key = "#data", sync = true)
     fun create(data: CreateUser): UUID {
@@ -20,6 +21,7 @@ class UsersFacade(private val usersRepository: UsersRepository) {
         return usersRepository.create(hashedData)
     }
 
+    /** Creates a user if email doesn't exist, otherwise returns existing user ID. */
     @Transactional
     @Cacheable(key = "#data", sync = true)
     fun upsert(data: CreateUser): UUID {
@@ -28,6 +30,7 @@ class UsersFacade(private val usersRepository: UsersRepository) {
         return create(data)
     }
 
+    /** Finds a user and verifies password when using ByEmailAndPassword filter. */
     @Transactional(readOnly = true)
     @Cacheable(key = "#filter", sync = true)
     fun find(filter: FindUser): User {
@@ -47,6 +50,7 @@ class UsersFacade(private val usersRepository: UsersRepository) {
         return usersRepository.getAll()
     }
 
+    /** Updates user and re-hashes password if changed. */
     @Transactional
     @CacheEvict(allEntries = true)
     fun update(id: UUID, data: UpdateUser) {

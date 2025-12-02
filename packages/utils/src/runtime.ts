@@ -1,7 +1,7 @@
 import { FetchHttpClient } from '@effect/platform'
 import { Effect, Layer, Logger, LogLevel, pipe } from 'effect'
 
-/** Shared layers injected into all Effects across the monorepo. */
+/** Provides shared dependencies (logging, HTTP client) for all Effect programs. */
 export type BaseLayers = Layer.Layer.Success<typeof BaseLayers>
 export const BaseLayers = Layer.mergeAll(
 	Layer.scope,

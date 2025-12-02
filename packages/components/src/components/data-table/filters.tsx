@@ -24,6 +24,7 @@ declare namespace FilterLogic {
 	}
 }
 
+/** Available filter operations for column filtering (case-insensitive). */
 const FILTERS = {
 	equals: (value: string, search: string) => value === search,
 	contains: (value: string, search: string) => String.toLowerCase(value).includes(String.toLowerCase(search)),
@@ -40,6 +41,7 @@ export function getFilterFn(value: unknown, filter: ColumnFilter) {
 	return FILTERS[filter.operator](globalThis.String(value ?? ''), filter.value)
 }
 
+/** Manages filter state for both global search and per-column advanced filters. */
 export function useFilters() {
 	const [filterMode, setFilterMode] = useState<FilterMode>()
 	const [globalFilter, setGlobalFilter] = useState('')
@@ -211,6 +213,7 @@ export declare namespace Filters {
 	}
 }
 
+/** Renders either global search input or advanced column filters based on filter mode. */
 export function Filters<TData>(props: Filters.Props<TData>) {
 	if (!props.filters.filterMode) return null
 

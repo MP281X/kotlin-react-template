@@ -8,6 +8,7 @@ export declare namespace Edge {
 	}
 }
 
+/** Renders a bezier edge with optional label positioned at the midpoint. */
 export function Edge(props: Edge.Props<Record<string, unknown>> & { children?: React.ReactNode }) {
 	const [edgePath, labelX, labelY] = xyFlow.getBezierPath(props)
 

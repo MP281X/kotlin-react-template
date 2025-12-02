@@ -7,6 +7,14 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
+/**
+ * Converts any case to sentence case for display.
+ *
+ * @example
+ * toSentenceCase("user_name")      // "User Name"
+ * toSentenceCase("userId")         // "User"
+ * toSentenceCase("address.city")   // "Address City"
+ */
 export const toSentenceCase = flow(
 	String.replaceAll('_', ' '),
 	String.replaceAll('.', ' '),
@@ -15,6 +23,7 @@ export const toSentenceCase = flow(
 	str => str.replace(/\s+Id$/, '')
 )
 
+/** Checks if value is a Date or PostgreSQL timestamp string. */
 const pgTimestampPattern = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)?$/
 export const isTimestamp = (timestamp: unknown): timestamp is string | Date => {
 	if (Predicate.isDate(timestamp)) return true
@@ -36,6 +45,7 @@ const formatUUID = (uuid: string) => {
 	return uuid.split('-')[0] || ''
 }
 
+/** Converts Error types to user-friendly message strings. */
 export const formatError = flow(
 	error => Match.value(error),
 	Match.when(Match.instanceOf(ParseResult.ParseError), error => {
@@ -52,6 +62,7 @@ export const formatError = flow(
 	Match.orElse(Function.constant('Unknown Error'))
 )
 
+/** Converts values to React nodes for table cell display (handles dates, UUIDs, nulls). */
 export const renderValue = flow(
 	(value: unknown) => Match.value(value),
 	Match.when(React.isValidElement, v => v),

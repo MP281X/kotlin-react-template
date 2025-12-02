@@ -29,6 +29,7 @@ export declare namespace Table {
 	}
 }
 
+/** Provides a full-featured data table with sorting, filtering, pagination, and column visibility. */
 export function Table<TData>(props: Table.Props<TData>) {
 	'use no memo'
 

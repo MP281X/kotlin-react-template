@@ -15,10 +15,12 @@ import java.nio.charset.StandardCharsets.UTF_8
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Flow
 
+/** Proxies requests to ElectricSQL for real-time data synchronization. */
 @Component
 class ElectricShapeProxy(@param:Value("\${electric.url}") private val electricBaseUrl: String) {
     private val httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build()
 
+    /** Streams table changes from ElectricSQL to clients for live updates. */
     fun streamTable(table: String, params: Map<String, String>): ResponseEntity<StreamingResponseBody> {
         val queryParams =
             (params + ("table" to table))

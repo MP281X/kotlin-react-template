@@ -13,7 +13,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.servlet.NoHandlerFoundException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
+/** Converts exceptions into user-friendly error messages. */
 object ErrorFormatter {
+    /** Returns a human-readable message from various exception types. */
     fun format(err: Throwable): String {
         return when (err) {
             is ConstraintViolationException -> err.constraintViolations.joinToString(", ") { "${it.propertyPath.last()} ${it.message}" }

@@ -19,12 +19,14 @@ import org.springframework.expression.spel.support.StandardEvaluationContext
 import org.springframework.stereotype.Component
 import java.util.*
 
+/** Marks a method for automatic audit logging with SpEL message interpolation. */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Audited(
     val message: String
 )
 
+/** Creates audit logs after annotated methods complete successfully. */
 @Aspect
 @Component
 class AuditAspect(

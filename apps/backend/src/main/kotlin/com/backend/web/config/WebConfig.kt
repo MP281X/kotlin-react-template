@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
+/** Registers middleware for API logging (debug only) and authentication. */
 @Configuration
 class WebConfig(
     private val apiLoggerMiddleware: ApiLoggerMiddleware,

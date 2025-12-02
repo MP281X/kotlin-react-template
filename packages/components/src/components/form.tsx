@@ -211,6 +211,7 @@ function FileField() {
 	)
 }
 
+/** Provides a searchable dropdown for selecting from a list of options. */
 function ComboboxField<T extends { id: string }>(props: { options: T[]; children: (option: T) => React.ReactNode }) {
 	const field = useFieldContext<string>()
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
@@ -289,6 +290,7 @@ export declare namespace Form {
 	}
 }
 
+/** Wraps form content with TanStack Form context and submit handling. */
 export function Form(props: Form.Props) {
 	return (
 		<props.form.AppForm>

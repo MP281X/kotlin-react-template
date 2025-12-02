@@ -3,8 +3,10 @@ import type { components, paths } from 'backend'
 export type Entities = components['schemas']
 
 /**
- * TypeScript utility to expand types and remove the never type
- * @example Expand<{ a: string; b: never }> -> { a: string }
+ * Converts a type to a flat object, removing never-valued keys.
+ *
+ * @example
+ * Expand<{ a: string; b: never }> // { a: string }
  */
 export type Expand<T> = T extends (...args: any[]) => any
 	? T
@@ -20,10 +22,6 @@ export type RemovePrefix<Str extends string, Prefix extends string> = Str extend
 
 export type RemoveSuffix<Str extends string, Suffix extends string> = Str extends `${infer Pre}${Suffix}` ? Pre : never
 
-/**
- * Extract method name by removing leading slash
- * @example CleanMethodName<"/updateUser"> -> "updateUser"
- */
 type CleanMethodName<T> = T extends `/${infer P}` ? P : never
 
 export type ExtractEndpoints<Method extends 'get' | 'post' | 'put' | 'delete'> = {
@@ -32,19 +30,12 @@ export type ExtractEndpoints<Method extends 'get' | 'post' | 'put' | 'delete'> =
 		: never]: paths[K][Method]
 }
 
-/**
- * Extract payload type from request body with recursively expanded types for readability
- * @example ExtractPayload<{requestBody: {content: {"application/json": UpdateUser}}}} -> UpdateUser (fully expanded)
- */
+/** Returns the request body type from an OpenAPI endpoint definition. */
 export type ExtractPayload<T> = T extends { requestBody: { content: { 'application/json': infer P } } }
 	? Expand<P>
 	: never
 
-/**
- * Extract response type with recursively expanded types for readability - handles both void and data responses
- * @example RpcResult<{responses: {200: {content: {"star/star": User}}}}> -> User (fully expanded)
- * @example RpcResult<{responses: {200: {content?: never}}}> -> void
- */
+/** Returns the 200 response type from an OpenAPI endpoint definition, or void if none. */
 export type ExtractResponse<T> = T extends { responses: { 200: { content: { '*/*': infer R } } } }
 	? Expand<R>
 	: T extends { responses: { 200: { content?: never } } }

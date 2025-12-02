@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.servlet.NoHandlerFoundException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
+/** Handles all exceptions globally and returns consistent error responses. */
 @ControllerAdvice
 class ExceptionHandler {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java.name)

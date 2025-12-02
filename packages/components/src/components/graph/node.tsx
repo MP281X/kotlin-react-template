@@ -8,6 +8,7 @@ export declare namespace Node {
 	}
 }
 
+/** Wraps node content with source/target handles for graph connections. */
 export function Node(props: Node.Props<Record<string, unknown>> & { children: React.ReactNode }) {
 	return (
 		<>

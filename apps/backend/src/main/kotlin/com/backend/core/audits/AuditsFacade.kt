@@ -11,6 +11,7 @@ import java.util.*
 
 @Component
 class AuditsFacade(private val auditsRepository: AuditsRepository, private val objectMapper: ObjectMapper) {
+    /** Creates an audit log entry after the current transaction commits. */
     @Transactional
     fun create(
         message: String,

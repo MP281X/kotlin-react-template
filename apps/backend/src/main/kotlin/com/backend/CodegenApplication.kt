@@ -20,6 +20,7 @@ import java.io.File
 import java.net.URI
 import kotlin.system.exitProcess
 
+/** Standalone app that fetches OpenAPI spec from running server for client code generation. */
 @SpringBootApplication(
     exclude = [DataSourceAutoConfiguration::class, HibernateJpaAutoConfiguration::class, FlywayAutoConfiguration::class, SecurityAutoConfiguration::class, JooqAutoConfiguration::class]
 )

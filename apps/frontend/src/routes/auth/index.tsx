@@ -15,6 +15,7 @@ function Page() {
 	const router = useRouter()
 	const canGoBack = useCanGoBack()
 
+	/** Returns to previous page if available, otherwise navigates to home. */
 	const navigateAfterAuth = async () => {
 		if (canGoBack) return router.history.back()
 		return await router.navigate({ to: '/' })

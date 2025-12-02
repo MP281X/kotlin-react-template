@@ -73,6 +73,7 @@ class UsersRepository(
         if (updatedRows != 1) throw ResourceNotFoundException("user '$id' not found")
     }
 
+    /** Soft-deletes a user by setting deleted flag (preserves audit trail). */
     @Audited(message = "deleted user '#{#id}'")
     fun delete(id: UUID) {
         val updatedRows =

@@ -28,6 +28,7 @@ export declare namespace Graph {
 	}
 }
 
+/** Renders a flow graph with automatic dagre layout and optional interactivity. */
 export function Graph<NodeTypes extends xyFlow.NodeTypes, EdgeTypes extends xyFlow.EdgeTypes>(
 	props: Graph.Props<NodeTypes, EdgeTypes>
 ) {

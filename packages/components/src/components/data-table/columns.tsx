@@ -11,6 +11,7 @@ import {
 import { renderValue, toSentenceCase } from '#lib/utils.tsx'
 import { type ColumnFilter, getFilterFn } from './filters.tsx'
 
+/** Provides type-safe dot notation for nested object keys ("user.address.city"). */
 type DotNotation<T> = {
 	[K in keyof T & (string | number)]: NonNullable<T[K]> extends object
 		? `${K}` | `${K}.${DotNotation<NonNullable<T[K]>>}`
@@ -35,6 +36,7 @@ export type ColumnDef<TData> =
 			accessorFn: (row: TData) => string | boolean | number | Date | undefined
 	  }
 
+/** Converts simplified column definitions to TanStack Table format with sorting and filtering. */
 export function convertToTanstackColumns<TData>(columnDefs: ColumnDef<TData>[]) {
 	return Array.map(columnDefs, (col, index) =>
 		Match.value(col).pipe(
@@ -81,6 +83,7 @@ export function convertToTanstackColumns<TData>(columnDefs: ColumnDef<TData>[]) 
 	)
 }
 
+/** Returns visibility state for columns marked as hidden in the column definitions. */
 export function getInitialColumnVisibility<TData>(
 	columnDefs: ColumnDef<TData>[],
 	columns: TanstackTable.ColumnDef<TData, unknown>[]
@@ -101,6 +104,7 @@ export declare namespace ColumnsVisibility {
 	}
 }
 
+/** Provides a dropdown menu to toggle column visibility. */
 export function ColumnsVisibility<TData>(props: ColumnsVisibility.Props<TData>) {
 	return (
 		<DropdownMenu>

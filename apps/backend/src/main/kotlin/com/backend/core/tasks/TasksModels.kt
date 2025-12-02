@@ -20,6 +20,7 @@ data class Task(
     val modifiedAt: LocalDateTime
 )
 
+/** Converts a jOOQ record to a domain model. */
 fun TasksRecord.toDto(): Task {
     return Task(
         id = this.id!!,
@@ -42,6 +43,7 @@ data class CreateTask(
     val assigneeId: UUID? = null
 )
 
+/** Converts create payload to a jOOQ record for insertion. */
 fun CreateTask.toRecord(): TasksRecord {
     return TasksRecord(
         title = this.title,
@@ -52,6 +54,7 @@ fun CreateTask.toRecord(): TasksRecord {
     )
 }
 
+/** Type-safe filter for task queries. */
 sealed class FindTask {
     data class ById(val id: UUID) : FindTask()
 }
@@ -65,6 +68,7 @@ data class UpdateTask(
     val assigneeId: UUID? = null
 )
 
+/** Converts update payload to a jOOQ record with only changed fields. */
 fun UpdateTask.toRecord(): TasksRecord {
     val record = Tasks.TASKS.newRecord()
     this.title?.let { record.title = it }

@@ -14,6 +14,7 @@ data class Audit(
     val timestamp: LocalDateTime
 )
 
+/** Converts a jOOQ record to a domain model. */
 fun AuditsRecord.toDto(): Audit {
     return Audit(
         id = this.id!!,

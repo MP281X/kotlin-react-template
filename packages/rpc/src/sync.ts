@@ -10,7 +10,6 @@ export namespace sync {
 		[Key in keyof ExtractEndpoints<'get'> as Uncapitalize<RemovePrefix<Key, 'sync'>>]: ExtractEndpoints<'get'>[Key]
 	}
 
-	/** Union of all available Sync method names */
 	export type Endpoints = keyof SyncEnpoints
 
 	export type Table = {
@@ -22,6 +21,7 @@ export namespace sync {
 	}
 }
 
+/** Creates real-time sync collections backed by Electric SQL. */
 export const sync = createCachedProxy<sync.Type>(entityName => {
 	const backendUrl = process.env['BACKEND_URL'] ?? window.location.origin
 

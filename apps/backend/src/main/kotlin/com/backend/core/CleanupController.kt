@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 
+/** Resets application state for testing (clears caches, truncates tables, clears ElectricSQL shapes). */
 @RestController
 class CleanupController(
     private val dataSource: HikariDataSource,
