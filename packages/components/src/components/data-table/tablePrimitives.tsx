@@ -59,8 +59,8 @@ BaseTable.Head = function BaseTableHead<TData>(props: any) {
 	return (
 		<TableHead
 			className={cn(
-				'sticky top-0 z-10 bg-muted',
-				canSort && 'cursor-pointer select-none hover:bg-muted/80',
+				'sticky top-0 z-10 bg-card',
+				canSort && 'cursor-pointer select-none hover:bg-accent',
 				columnSize === 1 && 'w-px whitespace-nowrap',
 				props.className
 			)}

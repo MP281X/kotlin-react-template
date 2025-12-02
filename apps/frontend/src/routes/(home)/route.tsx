@@ -1,7 +1,7 @@
 import { Result, useAtomSet, useAtomValue } from '@effect-atom/atom-react'
 import { createFileRoute, Link, Navigate, Outlet, useMatches, useNavigate } from '@tanstack/react-router'
 import { Match } from 'effect'
-import { ClipboardListIcon, HomeIcon, LogOutIcon, UserIcon } from 'lucide-react'
+import { ClipboardListIcon, GitGraphIcon, HomeIcon, LogOutIcon, UserIcon } from 'lucide-react'
 import { AtomRuntime } from '#lib/runtime.ts'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -46,7 +46,7 @@ function Layout() {
 										</div>
 										<div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
 											<span className="font-semibold">Acme Inc</span>
-											<span className="text-muted-foreground text-xs">Dashboard</span>
+											<span className="text-muted-foreground text-xs">kotlin-react-template</span>
 										</div>
 									</Link>
 								</SidebarMenuButton>
@@ -71,6 +71,14 @@ function Layout() {
 											<Link to="/audit">
 												<ClipboardListIcon />
 												<span>Audits</span>
+											</Link>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton asChild tooltip="Graph">
+											<Link to="/graph">
+												<GitGraphIcon />
+												<span>Graph</span>
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
@@ -123,6 +131,7 @@ function Header() {
 	const title = Match.value(matches.at(-1)?.routeId).pipe(
 		Match.when('/(home)/profile/', () => 'Profile'),
 		Match.when('/(home)/audit/', () => 'Audits'),
+		Match.when('/(home)/graph/', () => 'Graph'),
 		Match.orElse(() => 'kotlin-react-template')
 	)
 

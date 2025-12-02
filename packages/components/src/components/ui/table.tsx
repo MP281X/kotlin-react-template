@@ -1,7 +1,7 @@
 import { cn } from '#lib/utils.tsx'
 
 export function Table({ className, ...props }: React.ComponentProps<'table'>) {
-	return <table data-slot="table" className={cn('w-full caption-bottom text-sm', className)} {...props} />
+	return <table data-slot="table" className={cn('min-w-full caption-bottom text-sm', className)} {...props} />
 }
 
 export function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
@@ -27,7 +27,7 @@ export function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
 		<tr
 			data-slot="table-row"
 			className={cn(
-				'border-border/50 border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted',
+				'border-border border-b transition-colors odd:bg-muted/15 hover:bg-muted/50 data-[state=selected]:bg-muted',
 				className
 			)}
 			{...props}
@@ -53,7 +53,7 @@ export function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
 		<td
 			data-slot="table-cell"
 			className={cn(
-				'whitespace-nowrap border-border/50 border-r p-2 align-middle last:border-r-0 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+				'whitespace-nowrap border-border border-r p-2 align-middle last:border-r-0 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 				className
 			)}
 			{...props}

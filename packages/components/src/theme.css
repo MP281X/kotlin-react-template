@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@xyflow/react/dist/base.css";
 
 :root {
 	--background: oklch(1 0 0);
@@ -153,6 +154,7 @@
 * {
 	border-color: var(--border);
 	outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
+	outline-offset: -2px;
 }
 
 /* Default */
@@ -194,4 +196,20 @@ vite-error-overlay {
 ::-webkit-scrollbar-track {
 	background-color: var(--color-background);
 	border-left: 1px solid var(--color-border);
+}
+::-webkit-scrollbar-corner {
+	background-color: var(--color-accent);
+}
+
+/* React Flow graph styles */
+.react-flow__handle {
+	padding: 5px;
+	background-color: var(--color-border);
+	border: 0px;
+	border-radius: 3px;
+}
+
+.react-flow__edge > * {
+	stroke: var(--color-border);
+	stroke-width: 2px;
 }

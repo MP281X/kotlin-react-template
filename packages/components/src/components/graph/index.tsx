@@ -59,7 +59,7 @@ export function Graph<NodeTypes extends xyFlow.NodeTypes, EdgeTypes extends xyFl
 				proOptions={{ hideAttribution: true }}
 				onConnect={connection => props.onConnect?.({ source: connection.source, target: connection.target })}
 			>
-				<xyFlow.Background />
+				<xyFlow.Background color="var(--color-muted-foreground)" style={{ opacity: 0.3 }} />
 			</xyFlow.ReactFlow>
 		</div>
 	)
