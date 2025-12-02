@@ -48,15 +48,6 @@ class ExceptionHandler {
     }
 
     @ExceptionHandler
-    fun handleAccumulatedErrors(ex: AccumulatedErrorsException, request: HttpServletRequest): ResponseEntity<Map<String, Any>> {
-        ex.errors.forEach { errorDetail ->
-            logger.error("[{} {}] {} => {}", HttpStatus.UNPROCESSABLE_ENTITY.value(), request.method, request.requestURI, errorDetail.errorMessage)
-        }
-        val body = mapOf("errors" to ex.errors, "totalElements" to ex.totalElements)
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body)
-    }
-
-    @ExceptionHandler
     fun handleHttpStatusException(ex: HttpStatusException, request: HttpServletRequest): ResponseEntity<String> {
         errorLog(request, ex.httpStatusCode, ex)
         return ResponseEntity.status(ex.httpStatusCode).body(ex.message ?: "Invalid request error")

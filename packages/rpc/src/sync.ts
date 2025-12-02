@@ -30,7 +30,7 @@ export const sync = createCachedProxy<sync.Type>(entityName => {
 			shapeOptions: {
 				url: `${backendUrl}/api/sync${camelToPascal(entityName)}`,
 				parser: {
-					_int4: flow(String.slice(1, -1), String.split(','), Array.map(Number))
+					_int4: flow(String.slice(1, -1), String.split(','), Array.map(globalThis.Number))
 				}
 			},
 			getKey: (item: { id: string }) => item.id

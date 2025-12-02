@@ -3,7 +3,7 @@ description: Add a shadcn component to the monorepo
 agent: design
 ---
 
-Add a shadcn component to the components package, transforming it to match this project's patterns.
+Add a shadcn component to the components package.
 
 Component to add (and optional registry): $ARGUMENTS
 
@@ -11,13 +11,20 @@ Component to add (and optional registry): $ARGUMENTS
 
 1. **Fetch the component** — Use `shadcn_get_item_examples_from_registries` with the component name and registries (default `["@shadcn"]` if not specified)
 
-2. **Transform the code** — Apply these transformations:
+2. **Transform the code** — Apply ONLY these exact transformations, preserving everything else exactly as-is:
    - `@radix-ui/react-*` → `import * as Radix from 'radix-ui'` then use `Radix.ComponentName.SubComponent`
-   - `@/lib/utils` or `@/registry/.../utils` → `#lib/utils.ts`
+   - `@/lib/utils` or `@/registry/.../utils` → `#lib/utils.tsx`
    - `@/components/ui/*` or `@/registry/.../ui/*` → `#components/ui/*.tsx`
    - Remove `"use client"` directive
    - Remove `import * as React from "react"`
    - Convert `function X` + `export { X }` → `export function X`
+
+   **IMPORTANT**: Do NOT modify anything else. Keep the original:
+   - Code style and formatting
+   - Component props and their types
+   - Function signatures and parameter defaults
+   - Class names and Tailwind utilities
+   - Internal logic and structure
 
 3. **Write to** `packages/components/src/components/ui/{name}.tsx`
 

@@ -9,10 +9,7 @@ export class RPCError extends Data.TaggedError('RPCError')<{
 	status: 'Transport' | 'Encode' | 'InvalidUrl' | 'StatusCode' | 'Decode' | 'EmptyBody'
 }> {}
 
-export class AccumulatedErrors extends Data.TaggedError('AccumulatedErrors')<{
-	errors: { index: number; errorMessage: string; value: Record<string, unknown>[] }[]
-	totalElements: number
-}> {}
+export class AuthError extends Data.TaggedError('AuthError')<{ message: string }> {}
 
 /**
  * RPC client namespace containing core types for method calls with readable expanded types
@@ -55,10 +52,8 @@ export const callRpc = flow(
 		const res = yield* client.execute(request)
 
 		if (res.status === 200) return (yield* res.json) as callRpc.Result<Method>
-		if (res.status === 422) {
-			const response = (yield* res.json) as { errors: AccumulatedErrors['errors']; totalElements: number }
-			return yield* new AccumulatedErrors({ errors: response.errors, totalElements: response.totalElements })
-		}
+		if (res.status === 401) return yield* new AuthError({ message: yield* res.text })
+		if (res.status === 502) return yield* new RPCError({ status: 'StatusCode', message: 'Server is unavailable' })
 		return yield* new RPCError({ status: 'StatusCode', message: yield* res.text })
 	}),
 	E.catchTag('RequestError', e => new RPCError({ status: 'Transport', message: e.message })),
@@ -88,7 +83,7 @@ export declare namespace rpc {
 		// promise
 		PromiseLike<callRpc.Result<Method>> &
 			// effect
-			E.Effect<callRpc.Result<Method>, RPCError | AccumulatedErrors>
+			E.Effect<callRpc.Result<Method>, RPCError | AuthError>
 
 	/** Main RPC type mapping each method to its appropriate function signature */
 	export type Type = {

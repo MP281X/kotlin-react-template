@@ -19,7 +19,7 @@ CREATE UNIQUE INDEX idx_users_unique_email ON users("email") WHERE deleted = fal
 
 -- Insert default admin user (password: admin)
 INSERT INTO users (email, password, role)
-VALUES ('admin', '$2a$10$waFBULOPfB/vZ0uMqv90IOOSk136xhXHECsOsA8jCqayy2FUmbUru', 'ADMIN');
+VALUES ('admin@gmail.com', '$2a$10$waFBULOPfB/vZ0uMqv90IOOSk136xhXHECsOsA8jCqayy2FUmbUru', 'ADMIN');
 
 CREATE TABLE audits (
     -- primary keys

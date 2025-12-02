@@ -10,6 +10,7 @@
 
 	"exports": {
 		"./*": "./src/components/*.tsx",
+		"./utils": "./src/lib/utils.tsx",
 		"./theme.css": "./src/theme.css"
 	},
 

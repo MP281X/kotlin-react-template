@@ -6,6 +6,16 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
+export const formatTimestamp = (timestamp: string | Date) => {
+	return new Date(timestamp).toLocaleDateString('it-IT', {
+		minute: '2-digit',
+		hour: '2-digit',
+		day: '2-digit',
+		month: '2-digit',
+		year: 'numeric'
+	})
+}
+
 export const toSentenceCase = flow(
 	String.replaceAll('_', ' '),
 	String.replaceAll('.', ' '),

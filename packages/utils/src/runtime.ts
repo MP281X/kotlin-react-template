@@ -1,13 +1,12 @@
 import { FetchHttpClient } from '@effect/platform'
 import { Effect, Layer, Logger, LogLevel, pipe } from 'effect'
-import { LoggerLive } from './logger.ts'
 
 // configure global layers and runtime used in all the projects
 export type BaseLayers = Layer.Layer.Success<typeof BaseLayers>
 export const BaseLayers = Layer.mergeAll(
 	// base layers that are always injected
 	Layer.scope,
-	LoggerLive,
+	Logger.pretty,
 	Logger.minimumLogLevel(LogLevel.Debug),
 	FetchHttpClient.layer
 )
