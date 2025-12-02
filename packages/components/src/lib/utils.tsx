@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
-import { Function, flow, Match, ParseResult, Predicate, String } from 'effect'
+import { Function, flow, Match, ParseResult, Predicate, pipe, String } from 'effect'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -31,6 +31,14 @@ export const formatTimestamp = (timestamp: string | Date) => {
 	})
 }
 
+const uuidPattern = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
+export const isUUID = (value: unknown): value is string => {
+	return Predicate.isString(value) && uuidPattern.test(value)
+}
+export const formatUUID = (uuid: string) => {
+	return uuid.split('-')[0] || ''
+}
+
 export const formatError = flow(
 	error => Match.value(error),
 	Match.when(Match.instanceOf(ParseResult.ParseError), error => {
@@ -58,7 +66,13 @@ export const renderValue = flow(
 		return <span className="w-full text-center text-muted-foreground">-</span>
 	}),
 	Match.when(Predicate.isString, v => {
-		return <span className="w-[150] min-w-full select-text truncate" title={v} children={v} />
+		const transformedValue = pipe(
+			v,
+			(str: string) => str.replace(uuidPattern, formatUUID),
+			str => (String.includes('\n')(str) ? `${String.split('\n')(str)[0]}...` : str)
+		)
+
+		return <span className="w-[150] min-w-full select-text truncate" title={v} children={transformedValue} />
 	}),
 	Match.orElse(v => <span className="select-text">{globalThis.String(v)}</span>)
 )
