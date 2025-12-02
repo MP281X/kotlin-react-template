@@ -44,4 +44,18 @@ SELECT
     jsonb_build_object('id', id, 'email', email, 'role', role),
     id,
     "createdAt"
-FROM users WHERE email = 'admin';
+FROM users WHERE email = 'admin@gmail.com';
+
+-- Generate many audit logs for testing virtualization
+INSERT INTO audits ("message", "payload", "result", "userId", "timestamp")
+SELECT
+    (ARRAY['login', 'logout', 'updateProfile', 'changePassword', 'viewDashboard', 'exportData', 'importData', 'deleteRecord', 'createRecord', 'updateRecord'])[1 + floor(random() * 10)::int],
+    jsonb_build_object(
+        'ip', '192.168.' || floor(random() * 255)::int || '.' || floor(random() * 255)::int,
+        'userAgent', (ARRAY['Chrome/120', 'Firefox/121', 'Safari/17', 'Edge/120'])[1 + floor(random() * 4)::int],
+        'requestId', gen_random_uuid()
+    ),
+    CASE WHEN random() > 0.1 THEN jsonb_build_object('success', true) ELSE jsonb_build_object('success', false, 'error', 'Operation failed') END,
+    (SELECT id FROM users WHERE email = 'admin@gmail.com'),
+    now() - (random() * interval '30 days')
+FROM generate_series(1, 1000);

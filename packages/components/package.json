@@ -10,6 +10,9 @@
 
 	"exports": {
 		"./*": "./src/components/*.tsx",
+		"./graph": { "import": "./src/components/graph/index.tsx" },
+		"./data-table": { "import": "./src/components/data-table/index.tsx" },
+
 		"./utils": "./src/lib/utils.tsx",
 		"./theme.css": "./src/theme.css"
 	},
@@ -26,6 +29,10 @@
 
 		"radix-ui": "latest",
 		"@radix-ui/react-use-controllable-state": "latest",
+
+		"dagre": "latest",
+		"@types/dagre": "latest",
+		"@xyflow/react": "^12",
 
 		"@tanstack/react-form": "latest",
 		"@tanstack/react-table": "latest",

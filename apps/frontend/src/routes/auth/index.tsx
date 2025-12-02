@@ -1,7 +1,7 @@
 import { createFileRoute, useCanGoBack, useRouter } from '@tanstack/react-router'
 import { pipe, Schema } from 'effect'
 import { Form, revalidateLogic, useForm } from '@/components/form'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Card, CardAction, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { rpc } from '@/rpc'
 
 export const Route = createFileRoute('/auth/')({ component: Page })
@@ -34,7 +34,12 @@ function Page() {
 	return (
 		<Form form={form} className="w-full max-w-lg px-4 sm:px-0">
 			<Card className="w-full">
-				<CardHeader>Sign In</CardHeader>
+				<CardHeader>
+					<span className="font-bold">Sign In</span>
+					<CardAction>
+						<img src="/logo.png" alt="Logo" className="h-8 w-8" />
+					</CardAction>
+				</CardHeader>
 
 				<CardContent className="flex flex-col gap-4">
 					<form.AppField name="email" children={field => <field.EmailField />} />

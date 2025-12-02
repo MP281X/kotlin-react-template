@@ -24,7 +24,6 @@ class AuthController(
     data class LoginPayload(val email: String, val password: String)
 
     @PostMapping("login")
-    @Audited(message = "user login attempt for email '#{#payload.email}'")
     fun login(request: HttpServletRequest, @RequestBody payload: LoginPayload): UUID {
         return try {
             val userData = usersFacade.find(FindUser.ByEmailAndPassword(payload.email, payload.password))
