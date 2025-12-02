@@ -59,7 +59,7 @@ function Layout() {
 							<SidebarGroupContent>
 								<SidebarMenu>
 									<SidebarMenuItem>
-										<SidebarMenuButton asChild tooltip="Home">
+										<SidebarMenuButton asChild tooltip="Realtime">
 											<Link to="/realtime">
 												<RefreshCw />
 												<span>Realtime</span>

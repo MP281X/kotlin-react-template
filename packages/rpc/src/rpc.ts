@@ -1,5 +1,5 @@
 import { Cookies, HttpBody, HttpClient, HttpClientRequest } from '@effect/platform'
-import { Data, Effect as E, Effect, flow, pipe, Ref } from 'effect'
+import { Data, Effect, flow, pipe, Ref } from 'effect'
 import type { ExtractEndpoints, ExtractPayload, ExtractResponse } from '#lib/utils.ts'
 import { createCachedProxy } from '@/utils/cachedProxy'
 import { AwaitableEffect } from '@/utils/runtime'
@@ -20,11 +20,11 @@ export namespace callRpc {
 	export type RequiresPayload<M extends Methods> = [Payload<M>] extends [never] ? false : true
 }
 
-/** Persists cookies across requests for server-side usage. */
+/** Persists cookies across requests. */
 const cookieRef = Ref.unsafeMake(Cookies.empty)
 
 export const callRpc = flow(
-	E.fn(function* <Method extends callRpc.Methods>(method: Method, payload?: callRpc.Payload<Method>) {
+	Effect.fn(function* <Method extends callRpc.Methods>(method: Method, payload?: callRpc.Payload<Method>) {
 		const request = HttpClientRequest.post(`${process.env['BACKEND_URL'] ?? ''}/api/${method}`).pipe(
 			HttpClientRequest.acceptJson,
 			HttpClientRequest.setHeader('Content-Type', 'application/json'),
@@ -39,9 +39,11 @@ export const callRpc = flow(
 		if (res.status === 502) return yield* new RPCError({ status: 'StatusCode', message: 'Server is unavailable' })
 		return yield* new RPCError({ status: 'StatusCode', message: yield* res.text })
 	}),
-	E.catchTag('RequestError', e => new RPCError({ status: 'Transport', message: e.message })),
-	E.catchTag('ResponseError', e => new RPCError({ status: 'Transport', message: e.message })),
-	E.catchAllDefect(() => new RPCError({ status: 'Transport', message: 'Unknown Error' }))
+	Effect.catchTags({
+		RequestError: e => new RPCError({ status: 'Transport', message: e.message }),
+		ResponseError: e => new RPCError({ status: 'Transport', message: e.message })
+	}),
+	Effect.catchAllDefect(() => new RPCError({ status: 'Transport', message: 'Unknown Error' }))
 )
 
 export declare namespace rpc {
@@ -50,7 +52,7 @@ export declare namespace rpc {
 	export type Result<Method extends callRpc.Methods> = callRpc.Result<Method>
 
 	type RpcResponse<Method extends callRpc.Methods> = PromiseLike<callRpc.Result<Method>> &
-		E.Effect<callRpc.Result<Method>, RPCError | AuthError>
+		Effect.Effect<callRpc.Result<Method>, RPCError | AuthError>
 
 	export type Type = {
 		[Method in callRpc.Methods]: callRpc.RequiresPayload<Method> extends true

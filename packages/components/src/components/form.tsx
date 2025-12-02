@@ -14,6 +14,44 @@ import { cn, toSentenceCase } from '#lib/utils.tsx'
 
 const { fieldContext, formContext, useFieldContext, useFormContext } = tanstackForm.createFormHookContexts()
 
+/** Wraps a field component with standard label, validation, and error display. */
+function FieldWrapper(props: {
+	name: string
+	isInvalid: boolean
+	errors: { message: string }[]
+	children: React.ReactNode
+}) {
+	return (
+		<Field data-invalid={props.isInvalid}>
+			<FieldLabel htmlFor={props.name} children={toSentenceCase(props.name)} />
+			{props.children}
+			{props.isInvalid && <FieldError errors={props.errors} />}
+		</Field>
+	)
+}
+
+/** Creates an input field component for the specified input type. */
+function createInputField(type: 'text' | 'email' | 'password') {
+	return function InputField() {
+		const field = useFieldContext<string>()
+		const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+		return (
+			<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
+				<Input
+					type={type}
+					id={field.name}
+					name={field.name}
+					value={field.state.value}
+					onBlur={field.handleBlur}
+					onChange={e => field.handleChange(e.target.value)}
+					autoComplete="off"
+					aria-invalid={isInvalid}
+				/>
+			</FieldWrapper>
+		)
+	}
+}
+
 function SubmitButton(props: { children: React.ReactNode }) {
 	const form = useFormContext()
 
@@ -64,33 +102,15 @@ function CancelButton(props: { children: React.ReactNode; onClick: () => void })
 	)
 }
 
-function TextField() {
-	const field = useFieldContext<string>()
-	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
-			<Input
-				type="text"
-				id={field.name}
-				name={field.name}
-				value={field.state.value}
-				onBlur={field.handleBlur}
-				onChange={e => field.handleChange(e.target.value)}
-				autoComplete="off"
-				aria-invalid={isInvalid}
-			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
-	)
-}
+const TextField = createInputField('text')
+const EmailField = createInputField('email')
+const PasswordField = createInputField('password')
 
 function TextAreaField() {
 	const field = useFieldContext<string>()
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<Textarea
 				id={field.name}
 				name={field.name}
@@ -100,50 +120,7 @@ function TextAreaField() {
 				autoComplete="off"
 				aria-invalid={isInvalid}
 			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
-	)
-}
-
-function EmailField() {
-	const field = useFieldContext<string>()
-	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
-			<Input
-				type="email"
-				id={field.name}
-				name={field.name}
-				value={field.state.value}
-				onBlur={field.handleBlur}
-				onChange={e => field.handleChange(e.target.value)}
-				autoComplete="off"
-				aria-invalid={isInvalid}
-			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
-	)
-}
-
-function PasswordField() {
-	const field = useFieldContext<string>()
-	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
-			<Input
-				type="password"
-				id={field.name}
-				name={field.name}
-				value={field.state.value}
-				onBlur={field.handleBlur}
-				onChange={e => field.handleChange(e.target.value)}
-				autoComplete="off"
-				aria-invalid={isInvalid}
-			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
+		</FieldWrapper>
 	)
 }
 
@@ -151,23 +128,18 @@ function NumberField() {
 	const field = useFieldContext<number>()
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<Input
 				type="number"
 				id={field.name}
 				name={field.name}
 				value={field.state.value}
 				onBlur={field.handleBlur}
-				onChange={e => {
-					const value = Number.parse(e.target.value)
-					if (Option.isSome(value)) field.handleChange(value.value)
-				}}
+				onChange={e => Option.map(Number.parse(e.target.value), field.handleChange)}
 				autoComplete="off"
 				aria-invalid={isInvalid}
 			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
+		</FieldWrapper>
 	)
 }
 
@@ -175,8 +147,7 @@ function CheckboxField() {
 	const field = useFieldContext<boolean>()
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<div>
 				<Checkbox
 					id={field.name}
@@ -186,8 +157,7 @@ function CheckboxField() {
 					aria-invalid={isInvalid}
 				/>
 			</div>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
+		</FieldWrapper>
 	)
 }
 
@@ -195,19 +165,14 @@ function FileField() {
 	const field = useFieldContext<File>()
 	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<Input
 				type="file"
 				id={field.name}
-				onChange={e => {
-					const file = e.target.files?.[0]
-					if (file) field.handleChange(file)
-				}}
+				onChange={e => e.target.files?.[0] && field.handleChange(e.target.files[0])}
 				aria-invalid={isInvalid}
 			/>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
+		</FieldWrapper>
 	)
 }
 
@@ -220,8 +185,7 @@ function ComboboxField<T extends { id: string }>(props: { options: T[]; children
 	const selectedOption = props.options.find(option => option.id === field.state.value)
 
 	return (
-		<Field data-invalid={isInvalid}>
-			<FieldLabel htmlFor={field.name} children={toSentenceCase(field.name)} />
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger asChild>
 					<Button
@@ -255,8 +219,7 @@ function ComboboxField<T extends { id: string }>(props: { options: T[]; children
 					</Command>
 				</PopoverContent>
 			</Popover>
-			{isInvalid && <FieldError errors={field.state.meta.errors} />}
-		</Field>
+		</FieldWrapper>
 	)
 }
 

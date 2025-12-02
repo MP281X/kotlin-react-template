@@ -6,7 +6,6 @@ export function Toaster({ ...props }: Sonner.ToasterProps) {
 	return (
 		<Sonner.Toaster
 			theme="system"
-			position="top-right"
 			className="toaster group"
 			icons={{
 				success: <CircleCheckIcon className="size-4" />,

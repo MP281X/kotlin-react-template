@@ -7,7 +7,7 @@ import { rpc } from '@/rpc'
 export const Route = createFileRoute('/auth/')({ component: Page })
 
 const signInSchema = Schema.Struct({
-	email: pipe(Schema.Uppercase, Schema.minLength(5), Schema.includes('@')),
+	email: pipe(Schema.Lowercase, Schema.minLength(5), Schema.includes('@')),
 	password: Schema.NonEmptyString
 })
 
@@ -15,20 +15,15 @@ function Page() {
 	const router = useRouter()
 	const canGoBack = useCanGoBack()
 
-	/** Returns to previous page if available, otherwise navigates to home. */
-	const navigateAfterAuth = async () => {
-		if (canGoBack) return router.history.back()
-		return await router.navigate({ to: '/' })
-	}
-
 	const form = useForm({
 		defaultValues: { email: localStorage.getItem('email') ?? '', password: '' },
 		validationLogic: revalidateLogic({ mode: 'change' }),
 		validators: { onDynamic: Schema.standardSchemaV1(signInSchema) },
 		onSubmit: async ({ value }) => {
 			await rpc.login(value)
-			await navigateAfterAuth()
 			localStorage.setItem('email', value.email)
+			if (canGoBack) return router.history.back()
+			await router.navigate({ to: '/' })
 		}
 	})
 

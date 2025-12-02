@@ -6,11 +6,11 @@ import { camelToPascal } from '#lib/utils.ts'
 import { createCachedProxy } from '@/utils/cachedProxy'
 
 export namespace sync {
-	type SyncEnpoints = {
+	type SyncEndpoints = {
 		[Key in keyof ExtractEndpoints<'get'> as Uncapitalize<RemovePrefix<Key, 'sync'>>]: ExtractEndpoints<'get'>[Key]
 	}
 
-	export type Endpoints = keyof SyncEnpoints
+	export type Endpoints = keyof SyncEndpoints
 
 	export type Table = {
 		[K in Endpoints]: Entities[RemoveSuffix<Capitalize<K>, 's'>]

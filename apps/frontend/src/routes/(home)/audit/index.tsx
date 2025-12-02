@@ -1,11 +1,10 @@
 import { eq, useLiveSuspenseQuery } from '@tanstack/react-db'
 import { createFileRoute } from '@tanstack/react-router'
-import { EyeIcon, MoreHorizontalIcon } from 'lucide-react'
+import { EyeIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Table } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { formatTimestamp } from '@/components/utils'
 import { sync } from '@/rpc'
 
@@ -28,78 +27,58 @@ function Page() {
 				{ accessorKey: 'payload', hidden: true },
 				{ accessorKey: 'result', hidden: true },
 				{ accessorKey: 'timestamp', enableGlobalFilter: false, hidden: true },
-				{
-					render: audit => <AuditActions audit={audit} />
-				}
+				{ render: audit => <AuditActions audit={audit} /> }
 			]}
 			data={data}
 		/>
 	)
 }
 
-function DetailRow(props: { label: string; children: React.ReactNode }) {
-	return (
-		<div className="flex flex-col gap-1">
-			<span className="font-medium text-muted-foreground text-xs uppercase tracking-wide">{props.label}</span>
-			<span className="text-sm">{props.children}</span>
-		</div>
-	)
-}
-
-function JsonBlock(props: { data: unknown }) {
-	return (
-		<pre className="max-h-32 overflow-auto rounded bg-muted p-2 font-mono text-xs">
-			{JSON.stringify(props.data, null, 2)}
-		</pre>
-	)
-}
-
 function AuditActions(props: { audit: sync.Table['audits'] & { user: string | null } }) {
-	const [isViewing, setIsViewing] = useState(false)
+	const [isOpen, setIsOpen] = useState(false)
 
 	return (
 		<>
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<Button variant="ghost" size="icon-sm">
-						<MoreHorizontalIcon className="size-4" />
-					</Button>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
-					<DropdownMenuItem onClick={() => setIsViewing(true)}>
-						<EyeIcon className="size-4" />
-						View Details
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
-
-			<Dialog open={isViewing} onOpenChange={open => !open && setIsViewing(false)}>
+			<Button variant="ghost" size="icon-sm" onClick={() => setIsOpen(true)}>
+				<EyeIcon className="size-4" />
+			</Button>
+			<Dialog open={isOpen} onOpenChange={setIsOpen}>
 				<DialogContent className="max-w-xl">
 					<DialogHeader>
 						<DialogTitle>Audit Details</DialogTitle>
 						<DialogDescription>{props.audit.message}</DialogDescription>
 					</DialogHeader>
 
-					<div className="grid gap-4 py-2">
-						<DetailRow label="ID">
+					<div className="grid gap-3 text-sm">
+						<Row label="ID">
 							<code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">{props.audit.id}</code>
-						</DetailRow>
-						<div className="grid grid-cols-2 gap-4">
-							<DetailRow label="User">
-								{props.audit.user ?? <span className="text-muted-foreground italic">System</span>}
-							</DetailRow>
-							<DetailRow label="Timestamp">{formatTimestamp(props.audit.timestamp)}</DetailRow>
+						</Row>
+						<div className="grid grid-cols-2 gap-3">
+							<Row label="User">{props.audit.user ?? <span className="text-muted-foreground italic">System</span>}</Row>
+							<Row label="Time">{formatTimestamp(props.audit.timestamp)}</Row>
 						</div>
-						<DetailRow label="Message">{props.audit.message}</DetailRow>
-						<DetailRow label="Payload">
-							<JsonBlock data={props.audit.payload} />
-						</DetailRow>
-						<DetailRow label="Result">
-							<JsonBlock data={props.audit.result} />
-						</DetailRow>
+						<Row label="Payload">
+							<pre className="max-h-24 overflow-auto rounded bg-muted p-2 font-mono text-xs">
+								{JSON.stringify(props.audit.payload, null, 2)}
+							</pre>
+						</Row>
+						<Row label="Result">
+							<pre className="max-h-24 overflow-auto rounded bg-muted p-2 font-mono text-xs">
+								{JSON.stringify(props.audit.result, null, 2)}
+							</pre>
+						</Row>
 					</div>
 				</DialogContent>
 			</Dialog>
 		</>
+	)
+}
+
+function Row(props: { label: string; children: React.ReactNode }) {
+	return (
+		<div className="flex flex-col gap-1">
+			<span className="text-muted-foreground text-xs">{props.label}</span>
+			<span>{props.children}</span>
+		</div>
 	)
 }

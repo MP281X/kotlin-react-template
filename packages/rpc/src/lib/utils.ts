@@ -36,11 +36,7 @@ export type ExtractPayload<T> = T extends { requestBody: { content: { 'applicati
 	: never
 
 /** Returns the 200 response type from an OpenAPI endpoint definition, or void if none. */
-export type ExtractResponse<T> = T extends { responses: { 200: { content: { '*/*': infer R } } } }
-	? Expand<R>
-	: T extends { responses: { 200: { content?: never } } }
-		? void
-		: void
+export type ExtractResponse<T> = T extends { responses: { 200: { content: { '*/*': infer R } } } } ? Expand<R> : void
 
 export function camelToPascal<Str extends string>(str: Str) {
 	return (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<Str>
