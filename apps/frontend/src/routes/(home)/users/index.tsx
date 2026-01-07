@@ -6,11 +6,11 @@ import { useState } from 'react'
 import { AtomRuntime } from '#lib/runtime.ts'
 import { Table } from '@/components/data-table'
 import { Form, useForm } from '@/components/form'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { errorToast, infoToast } from '@/components/ui/sonner'
-import { cn } from '@/components/utils'
 import { rpc, sync } from '@/rpc'
 
 export const Route = createFileRoute('/(home)/users/')({ component: Page })
@@ -115,15 +115,10 @@ function RoleSelector(props: { value: Role; onChange: (role: Role) => void }) {
 
 function RoleBadge(props: { role: Role }) {
 	return (
-		<span
-			className={cn(
-				'inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-xs',
-				props.role === 'ADMIN' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
-			)}
-		>
+		<Badge variant={props.role === 'ADMIN' ? 'primary' : 'default'}>
 			{props.role === 'ADMIN' ? <ShieldIcon className="size-3" /> : <UserIcon className="size-3" />}
 			{props.role}
-		</span>
+		</Badge>
 	)
 }
 

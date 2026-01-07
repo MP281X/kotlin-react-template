@@ -1,6 +1,7 @@
 import { useAtomSuspense } from '@effect-atom/atom-react'
 import { createFileRoute } from '@tanstack/react-router'
 import { AtomRuntime } from '#lib/runtime.ts'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { formatTimestamp } from '@/components/utils'
@@ -22,7 +23,7 @@ function Page() {
 							<CardTitle className="text-lg">{user.email}</CardTitle>
 							<CardDescription>Primary email address</CardDescription>
 						</div>
-						<span className="border bg-muted px-3 py-1 text-primary text-xs">{user.role}</span>
+						<Badge variant={user.role === 'ADMIN' ? 'primary' : 'default'}>{user.role}</Badge>
 					</div>
 				</CardHeader>
 			</Card>

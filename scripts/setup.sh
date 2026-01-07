@@ -30,9 +30,6 @@ log "INSTALL KOTLIN PACKAGES"
 log "STOP CONTAINERS"
 docker compose -f docker/docker-compose.yaml down --remove-orphans --timeout 0
 
-log "CLEAN POSTGRES DATA"
-docker volume rm template-postgres 2>/dev/null || true
-
 log "RESTART CONTAINERS"
 docker compose -f docker/docker-compose.yaml up --detach --wait --build
 

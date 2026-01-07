@@ -9,7 +9,6 @@
 
 # other files/folders
 **/*.logs
-**/*.csv
 **/*.xlsx
 **/*.xlsm
 

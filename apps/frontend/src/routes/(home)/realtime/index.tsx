@@ -146,7 +146,7 @@ function TaskCard(props: { task: sync.Table['tasks'] }) {
 					<Button
 						variant="ghost"
 						size="icon-sm"
-						className="-mr-1 -mt-1 opacity-0 transition-opacity group-hover:opacity-100"
+						className="-mt-1 -mr-1 opacity-0 transition-opacity group-hover:opacity-100"
 						onClick={() => deleteTask({ id: props.task.id }).catch(errorToast)}
 					>
 						<Trash2Icon className="size-4" />

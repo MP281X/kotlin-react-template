@@ -6,7 +6,7 @@ services:
     network_mode: host
 
   postgres:
-    image: postgres:18.1-alpine
+    image: postgres:17-alpine
     ports: [5432:5432]
     environment:
       TZ: 'Europe/Rome'
@@ -20,7 +20,6 @@ services:
       test: ['CMD-SHELL', 'pg_isready']
       interval: 5s
       timeout: 10s
-    volumes: [template-postgres:/var/lib/postgresql/data]
 
   electric:
     image: electricsql/electric:latest
@@ -30,5 +29,3 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
     restart: on-failure
     depends_on: { postgres: { condition: service_healthy } }
-
-volumes: { template-postgres: {} }
