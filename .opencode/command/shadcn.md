@@ -1,47 +1,59 @@
 ---
-description: Add a shadcn component to the monorepo
-agent: design
+description: Add a shadcn component via CLI
+model: github-copilot/claude-haiku-4.5
+temperature: 0.1
 ---
 
-Component (required, optional registry after space):
+# ROLE
+CLI automation helper for shadcn components.
+
+# OBJECTIVE
+Write a shadcn component file into `packages/components/src/components/ui` using shadcn CLI output and align imports to repo subpath aliases.
+
+# INSTRUCTIONS
+1. Parse required fields by referencing XML blocks under INPUTS.
+2. Read `<arguments>` to get the component request. If empty, ask for a component name or short description.
+3. Use `<available_components>` to choose the best component name. If multiple matches, ask to confirm; if none, return blocked.
+4. Run `bunx shadcn@latest view COMPONENT_NAME` from `packages/components` and capture the component source.
+5. Apply alias conversion to the captured source before writing: convert `@/...` imports to the matching subpath alias keys listed in `<component_aliases>`.
+6. Write a single file named `COMPONENT_NAME.tsx` to `packages/components/src/components/ui/`, overwriting if it exists.
+7. Run `bun run fix` from the repo root.
+
+# CONSTRAINTS
+- Verified facts only.
+- Run all shadcn CLI commands from `packages/components`.
+- Use bun and bunx for commands.
+- Only change to component source is alias conversion.
+- Preserve the component source exactly as returned by view, aside from alias conversion.
+- Target output path: `packages/components/src/components/ui`.
+
+# INPUTS
+<arguments>
 $ARGUMENTS
+</arguments>
 
-## Process
+<available_components>
+!`cd packages/components && bunx shadcn@latest list @shadcn`
+</available_components>
 
-1. **Fetch component** — Use `shadcn_get_item_examples_from_registries` with the component name and registries (default `["@shadcn"]`).
+<component_aliases>
+!`cd packages/components && jq -r '.imports | to_entries[] | "\(.key)=\(.value)"' package.json`
+</component_aliases>
 
-2. **Transform imports** — Apply only these transformations:
-   - `@radix-ui/react-*` → `import * as Radix from 'radix-ui'` then `Radix.ComponentName.SubComponent`
-   - `@/lib/utils` or `@/registry/.../utils` → `#lib/utils.tsx`
-   - `@/components/ui/*` or `@/registry/.../ui/*` → `#components/ui/*.tsx`
-   - Remove `"use client"` directive
-   - Remove `import * as React from "react"`
-   - Convert `function X` + `export { X }` → `export function X`
+# OUTPUT
+**RESULT:**
+- <done|blocked> — <one-line reason>
 
-   Keep everything else exactly as-is: props, types, signatures, class names, logic.
+**CHANGES:**
+- <paths updated or "none">
 
-3. **Write file** — Save to `packages/components/src/components/ui/{name}.tsx`
+**FOLLOW-UP:**
+- <next action or "none">
 
-4. **Check dependencies** — Verify imports exist in `packages/components/package.json`. Add missing packages with version `latest`.
+# RECAP
+- Run shadcn view from `packages/components`.
+- Write one file per component name.
+- Only convert `@/...` aliases to subpath aliases.
 
-5. **Validate** — Fix any linting or type errors by reviewing existing components in `packages/components/src/components/ui/`.
-
-## Example
-
-```tsx
-// before (from shadcn registry)
-"use client"
-
-import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { cn } from "@/lib/utils"
-
-function Dialog({ ...props }) { }
-export { Dialog }
-
-// after (transformed for this monorepo)
-import * as Radix from "radix-ui"
-import { cn } from "#lib/utils.tsx"
-
-export function Dialog({ ...props }) { }
-```
+# STOP
+Component written and formatting run, or blocked with a clear reason.
