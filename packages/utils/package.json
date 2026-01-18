@@ -11,6 +11,6 @@
 
 	"scripts": {
 		"fix": "biome check --write --unsafe",
-		"check": "tsc --noEmit && biome check"
+		"check": "tsgo --noEmit && biome check"
 	}
 }

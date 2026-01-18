@@ -1,22 +1,18 @@
 ---
-description: Deep analysis mode
+description: Ultrathink mode—deep reasoning with verified facts only
 ---
 
-Task (required):
+<mode>
+Ultrathink active. Deep analysis mode.
+</mode>
+
+<constraints>
+- Sacrifice grammar for concision
+- Prefer safe assumptions over blocking questions
+- Be autonomous; keep going to completion
+- Use docs agent whenever helpful
+- Separate verified facts from assumptions
+- Analyze step-by-step
+</constraints>
+
 $ARGUMENTS
-
-Analyze step-by-step using only verified facts. Do not assume or speculate.
-
-## Example
-
-```
-Task: "Why does the login fail silently?"
-
-Approach:
-1. Read AuthController.kt — trace login flow
-2. Check AuthMiddleware.kt — session handling
-3. Search for empty catch blocks that swallow errors
-4. Verify frontend handles all response codes
-
-Report: exact line where error is lost + fix
-```

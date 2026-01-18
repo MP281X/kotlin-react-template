@@ -7,11 +7,6 @@
 **/*.tsbuildinfo
 **/node_modules
 
-# other files/folders
-**/*.logs
-**/*.xlsx
-**/*.xlsm
-
 # IDE
 **/*.iml
 **/*.ipr

@@ -2,7 +2,7 @@
 	"ui": "tui",
 	"$schema": "https://turbo.build/schema.json",
 
-	"globalDependencies": [".env", "tsconfig.json", "biome.json", "pnpm-lock.yaml"],
+	"globalDependencies": [".env", "tsconfig.json", "biome.json", "bun.yaml"],
 	"globalEnv": ["BACKEND_*", "PUBLIC_*", "POSTGRES_*", "NODE_*"],
 
 	"tasks": {
@@ -14,7 +14,6 @@
 		"test": { "cache": false },
 		"check": { "cache": true },
 
-		"build": { "cache": true, "dependsOn": ["^build"], "outputs": ["dist/**", "target/**", "*.css"] },
-		"setup": { "cache": false }
+		"build": { "cache": true, "dependsOn": ["^build"], "outputs": ["dist/**", "target/**", "*.css"] }
 	}
 }

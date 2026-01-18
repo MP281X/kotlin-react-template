@@ -7,4 +7,4 @@ if [ $2 = "dev" ]; then
 	kill_process 3000 # kill frontend
 fi
 
-pnpm exec turbo $@
+bunx turbo $@

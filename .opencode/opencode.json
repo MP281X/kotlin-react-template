@@ -1,24 +1,40 @@
 {
 	"$schema": "https://opencode.ai/config.json",
+	"theme": "kanagawa",
+	"share": "disabled",
+	"autoupdate": true,
 
-	"mcp": {
-    "grep": {
-			"type": "remote",
-			"url": "https://mcp.grep.app"
-		},
-		"shadcn": {
-			"type": "local",
-			"command": ["npx", "-y", "shadcn@latest", "mcp"]
-		},
-		"context7": {
-			"type": "local",
-			"command": ["npx", "-y", "@upstash/context7-mcp@latest"]
+	"small_model": "opencode/gpt-5-nano",
+
+	"mode": {
+		"plan": { "model": "github-copilot/gpt-5.2-codex" },
+		"build": { "model": "github-copilot/gpt-5.2-codex" }
+	},
+
+	"agent": {
+		"explore": { "model": "opencode/grok-code" },
+		"compaction": { "model": "opencode/gpt-5-nano" },
+		"general": { "model": "github-copilot/claude-haiku-4.5" }
+	},
+
+	"permission": {
+		"bash": {
+			"*": "allow",
+			"gh *": "deny",
+			"npm *": "deny",
+			"git *": "deny",
+			"git push*": "ask",
+			"git commit*": "ask",
+			"git ammend*": "ask",
+			"git log*": "allow",
+			"git show*": "allow",
+			"git pull*": "allow",
+			"git diff*": "allow",
+			"git status*": "allow"
 		}
 	},
 
-	"tools": {
-    "grep_*": false,
-		"shadcn_*": false,
-		"context7_*": false
+	"lsp": {
+		"eslint": { "disabled": true }
 	}
 }
