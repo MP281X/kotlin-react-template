@@ -29,13 +29,11 @@
 
 		"cmdk": "latest",
 		"sonner": "latest",
+		"@base-ui/react": "^1",
 		"lucide-react": "latest",
 
-		"@base-ui/react": "^1",
-		"radix-ui": "latest",
 		"@fontsource-variable/inter": "latest",
 		"@fontsource-variable/jetbrains-mono": "latest",
-		"@radix-ui/react-use-controllable-state": "latest",
 
 		"dagre": "latest",
 		"@types/dagre": "latest",
@@ -43,7 +41,6 @@
 
 		"@tanstack/react-form": "latest",
 		"@tanstack/react-table": "latest",
-		"@tanstack/react-virtual": "latest",
 
 		"clsx": "latest",
 		"tailwind-merge": "latest",

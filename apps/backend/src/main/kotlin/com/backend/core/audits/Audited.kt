@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
 import org.aspectj.lang.reflect.MethodSignature
-import org.jooq.JSONB
 import org.slf4j.LoggerFactory
 import org.springframework.expression.ExpressionParser
 import org.springframework.expression.ParserContext
