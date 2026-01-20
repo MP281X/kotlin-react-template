@@ -89,13 +89,17 @@ bunx turbo run fix --filter=components
   - Use `import type` with `verbatimModuleSyntax` enabled.
   - Group imports: third-party, workspace packages, local aliases, relatives.
   - Workspace packages: `@/components`, `@/utils`, `@/rpc`.
-  - Local aliases (per package): `#lib/*`, `#components/*`, `#routes/*`.
+  - Local aliases (per package):
+    - apps/frontend: `#lib/*`, `#components/*`, `#routes/*`, `#static/*`.
+    - packages/components: `#lib/*`, `#components/*`, `#hooks/*`.
 - Formatting (Biome)
   - Line width 120, single quotes, semicolons as needed.
   - No trailing commas; arrow parens only when required.
   - Organized imports are auto-applied by Biome.
 - Types
   - `strict` mode, `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`.
+  - `noUncheckedIndexedAccess` + `noPropertyAccessFromIndexSignature` are on; handle `undefined` from lookups.
+  - `noImplicitOverride` is on; add `override` when implementing superclass methods.
   - Avoid `any`; prefer explicit types and `unknown` for boundaries.
   - Use array shorthand types (`string[]`) per Biome rule.
 - React
@@ -111,6 +115,8 @@ bunx turbo run fix --filter=components
 - Formatting
   - Run `bun --cwd apps/backend run fix` or `./scripts/ktlint --format`.
   - Do not format generated Jooq files.
+  - `.editorconfig` sets 4-space indent, 200 max line length, and disables trailing commas.
+  - Several ktlint wrapping/signature rules are disabled to keep layouts flexible.
 - Naming
   - `camelCase` for functions/properties, `PascalCase` for classes.
   - `SCREAMING_SNAKE_CASE` for constants.
@@ -121,7 +127,7 @@ bunx turbo run fix --filter=components
   - Log via SLF4J (`logger.error(...)`).
 - Imports
   - Sort alphabetically; group stdlib, Spring, Jooq, local.
-  - Avoid wildcard imports.
+  - Wildcard imports are allowed by ktlint, but prefer explicit imports unless it improves readability.
 - Architecture
   - Controllers: `com.backend.web`.
   - Services: `com.backend.core.<feature>`.
@@ -133,6 +139,7 @@ bunx turbo run fix --filter=components
 
 ### General
 - Keep generated files untouched; rerun codegen instead.
+- Biome ignores generated TypeScript patterns like `**/*.g.ts` and `**/*.gen.ts`.
 - Prefer existing utilities/components from `packages/*` before adding new ones.
 - Environment variables (Turbo globalEnv): `BACKEND_*`, `PUBLIC_*`, `POSTGRES_*`, `NODE_*`.
 

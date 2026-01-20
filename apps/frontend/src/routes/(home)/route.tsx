@@ -60,30 +60,30 @@ function Layout() {
 						<SidebarGroup>
 							<SidebarGroupContent>
 								<SidebarMenu>
-								<SidebarMenuItem>
-									<SidebarMenuButton tooltip="Realtime" onClick={() => navigate({ to: '/realtime' })}>
-										<RefreshCw />
-										<span>Realtime</span>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-								<SidebarMenuItem>
-									<SidebarMenuButton tooltip="Audits" onClick={() => navigate({ to: '/audit' })}>
-										<ClipboardListIcon />
-										<span>Audits</span>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-								<SidebarMenuItem>
-									<SidebarMenuButton tooltip="Graph" onClick={() => navigate({ to: '/graph' })}>
-										<GitGraphIcon />
-										<span>Graph</span>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
-								<SidebarMenuItem>
-									<SidebarMenuButton tooltip="Users" onClick={() => navigate({ to: '/users' })}>
-										<UsersIcon />
-										<span>Users</span>
-									</SidebarMenuButton>
-								</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton tooltip="Realtime" onClick={() => navigate({ to: '/realtime' })}>
+											<RefreshCw />
+											<span>Realtime</span>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton tooltip="Audits" onClick={() => navigate({ to: '/audit' })}>
+											<ClipboardListIcon />
+											<span>Audits</span>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton tooltip="Graph" onClick={() => navigate({ to: '/graph' })}>
+											<GitGraphIcon />
+											<span>Graph</span>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
+									<SidebarMenuItem>
+										<SidebarMenuButton tooltip="Users" onClick={() => navigate({ to: '/users' })}>
+											<UsersIcon />
+											<span>Users</span>
+										</SidebarMenuButton>
+									</SidebarMenuItem>
 								</SidebarMenu>
 							</SidebarGroupContent>
 						</SidebarGroup>
