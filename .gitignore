@@ -7,6 +7,10 @@
 **/*.tsbuildinfo
 **/node_modules
 
+# opencode
+.opencode/repos
+.opencode/plans
+
 # IDE
 **/*.iml
 **/*.ipr

@@ -108,11 +108,9 @@ export declare namespace ColumnsVisibility {
 export function ColumnsVisibility<TData>(props: ColumnsVisibility.Props<TData>) {
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant="outline" size="sm" className={props.className}>
-					<ColumnsIcon className="size-4" />
-					<span>Columns</span>
-				</Button>
+			<DropdownMenuTrigger render={<Button variant="outline" size="sm" className={props.className} />}>
+				<ColumnsIcon className="size-4" />
+				<span>Columns</span>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
 				{Array.map(props.columns, column => (

@@ -177,14 +177,16 @@ function ComboboxField<T extends { id: string }>(props: { options: T[]; children
 	return (
 		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
 			<Popover open={open} onOpenChange={setOpen}>
-				<PopoverTrigger asChild>
-					<Button
-						variant="outline"
-						role="combobox"
-						className={cn('w-full justify-between', !field.state.value && 'text-muted-foreground')}
-					>
-						{selectedOption ? props.children(selectedOption) : toSentenceCase(field.name)}
-					</Button>
+				<PopoverTrigger
+					render={
+						<Button
+							variant="outline"
+							role="combobox"
+							className={cn('w-full justify-between', !field.state.value && 'text-muted-foreground')}
+						/>
+					}
+				>
+					{selectedOption ? props.children(selectedOption) : toSentenceCase(field.name)}
 				</PopoverTrigger>
 				<PopoverContent className="w-(--radix-popover-trigger-width) p-0">
 					<Command>

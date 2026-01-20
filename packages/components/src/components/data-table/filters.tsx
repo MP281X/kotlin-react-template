@@ -146,10 +146,10 @@ function AdvancedFilters<TData>(props: AdvancedFilters.Props<TData>) {
 					<span className="w-12 text-left text-muted-foreground text-sm">{index === 0 ? 'where' : 'and'}</span>
 
 					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" size="sm" className="min-w-[120px] justify-between">
-								{toSentenceCase(filter.column)}
-							</Button>
+						<DropdownMenuTrigger
+							render={<Button variant="outline" size="sm" className="min-w-[120px] justify-between" />}
+						>
+							{toSentenceCase(filter.column)}
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
 							{Array.map(props.columns, col => (
@@ -164,10 +164,10 @@ function AdvancedFilters<TData>(props: AdvancedFilters.Props<TData>) {
 					</DropdownMenu>
 
 					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" size="sm" className="min-w-[140px] justify-between">
-								{filter.operator}
-							</Button>
+						<DropdownMenuTrigger
+							render={<Button variant="outline" size="sm" className="min-w-[140px] justify-between" />}
+						>
+							{filter.operator}
 						</DropdownMenuTrigger>
 						<DropdownMenuContent>
 							{Array.map(['equals', 'contains', 'starts with', 'ends with', 'does not contain'] as const, op => (

@@ -115,7 +115,7 @@ function RoleSelector(props: { value: Role; onChange: (role: Role) => void }) {
 
 function RoleBadge(props: { role: Role }) {
 	return (
-		<Badge variant={props.role === 'ADMIN' ? 'primary' : 'default'}>
+		<Badge variant={props.role === 'ADMIN' ? 'secondary' : 'default'}>
 			{props.role === 'ADMIN' ? <ShieldIcon className="size-3" /> : <UserIcon className="size-3" />}
 			{props.role}
 		</Badge>

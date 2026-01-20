@@ -31,6 +31,7 @@
 		"sonner": "latest",
 		"lucide-react": "latest",
 
+		"@base-ui/react": "^1",
 		"radix-ui": "latest",
 		"@fontsource-variable/inter": "latest",
 		"@fontsource-variable/jetbrains-mono": "latest",

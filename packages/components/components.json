@@ -1,13 +1,21 @@
 {
 	"$schema": "https://ui.shadcn.com/schema.json",
 
-	"style": "default",
+	"style": "base-lyra",
 	"menuColor": "default",
 	"menuAccent": "subtle",
 	"iconLibrary": "lucide",
 
 	"rsc": false,
 	"tsx": true,
+
+	"aliases": {
+		"lib": "#lib",
+		"hooks": "#hooks",
+		"ui": "#components/ui",
+		"utils": "#lib/utils",
+		"components": "#components"
+	},
 
 	"tailwind": {
 		"config": "",

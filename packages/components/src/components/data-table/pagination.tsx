@@ -41,10 +41,8 @@ export function Pagination(props: Pagination.Props) {
 			</div>
 			<div className="flex items-center gap-2">
 				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="outline" size="sm">
-							{props.pagination.pageSize} per page
-						</Button>
+					<DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+						{props.pagination.pageSize} per page
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						{Array.map([50, 100, 150], size => (

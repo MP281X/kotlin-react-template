@@ -39,16 +39,14 @@ function Layout() {
 					<SidebarHeader className="h-14 flex-row items-center justify-between border-sidebar-border border-b">
 						<SidebarMenu className="flex-1">
 							<SidebarMenuItem>
-								<SidebarMenuButton size="lg" asChild className="group-data-[collapsible=icon]:p-0!">
-									<Link to="/">
-										<div className="flex size-8 items-center justify-center rounded-md bg-[#ffffff]">
-											<img src="/logo.png" alt="Logo" className="size-5" />
-										</div>
-										<div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
-											<span className="font-semibold">Acme Inc</span>
-											<span className="text-muted-foreground text-xs">kotlin-react-template</span>
-										</div>
-									</Link>
+								<SidebarMenuButton size="lg" render={<Link to="/" />} className="group-data-[collapsible=icon]:p-0!">
+									<div className="flex size-8 items-center justify-center rounded-md bg-[#ffffff]">
+										<img src="/logo.png" alt="Logo" className="size-5" />
+									</div>
+									<div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
+										<span className="font-semibold">Acme Inc</span>
+										<span className="text-muted-foreground text-xs">kotlin-react-template</span>
+									</div>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						</SidebarMenu>
@@ -59,35 +57,27 @@ function Layout() {
 							<SidebarGroupContent>
 								<SidebarMenu>
 									<SidebarMenuItem>
-										<SidebarMenuButton asChild tooltip="Realtime">
-											<Link to="/realtime">
-												<RefreshCw />
-												<span>Realtime</span>
-											</Link>
+										<SidebarMenuButton render={<Link to="/realtime" />} tooltip="Realtime">
+											<RefreshCw />
+											<span>Realtime</span>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 									<SidebarMenuItem>
-										<SidebarMenuButton asChild tooltip="Audits">
-											<Link to="/audit">
-												<ClipboardListIcon />
-												<span>Audits</span>
-											</Link>
+										<SidebarMenuButton render={<Link to="/audit" />} tooltip="Audits">
+											<ClipboardListIcon />
+											<span>Audits</span>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 									<SidebarMenuItem>
-										<SidebarMenuButton asChild tooltip="Graph">
-											<Link to="/graph">
-												<GitGraphIcon />
-												<span>Graph</span>
-											</Link>
+										<SidebarMenuButton render={<Link to="/graph" />} tooltip="Graph">
+											<GitGraphIcon />
+											<span>Graph</span>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 									<SidebarMenuItem>
-										<SidebarMenuButton asChild tooltip="Users">
-											<Link to="/users">
-												<UsersIcon />
-												<span>Users</span>
-											</Link>
+										<SidebarMenuButton render={<Link to="/users" />} tooltip="Users">
+											<UsersIcon />
+											<span>Users</span>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 								</SidebarMenu>
@@ -98,11 +88,9 @@ function Layout() {
 					<SidebarFooter className="border-sidebar-border border-t">
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton asChild tooltip="Profile">
-									<Link to="/profile">
-										<UserIcon />
-										<span>Profile</span>
-									</Link>
+								<SidebarMenuButton render={<Link to="/profile" />} tooltip="Profile">
+									<UserIcon />
+									<span>Profile</span>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>

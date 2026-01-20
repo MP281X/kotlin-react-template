@@ -23,7 +23,7 @@ function Page() {
 							<CardTitle className="text-lg">{user.email}</CardTitle>
 							<CardDescription>Primary email address</CardDescription>
 						</div>
-						<Badge variant={user.role === 'ADMIN' ? 'primary' : 'default'}>{user.role}</Badge>
+						<Badge variant={user.role === 'ADMIN' ? 'secondary' : 'default'}>{user.role}</Badge>
 					</div>
 				</CardHeader>
 			</Card>

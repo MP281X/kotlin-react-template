@@ -11,6 +11,7 @@
 		"fix": "./scripts/turbo.sh run fix",
 		"check": "./scripts/turbo.sh run check",
 
+		"shadcn": "cd packages/components && bunx --bun shadcn@latest",
 		"setup": "./scripts/setup.sh",
 		"codegen": "./scripts/turbo.sh run codegen"
 	},
