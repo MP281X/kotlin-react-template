@@ -1,8 +1,8 @@
 import { cva, type VariantProps } from 'class-variance-authority'
-import { useMemo } from 'react'
+import { Array } from 'effect'
 import { Label } from '#components/ui/label.tsx'
 import { Separator } from '#components/ui/separator.tsx'
-import { cn } from '#lib/utils.tsx'
+import { cn, formatError } from '#lib/utils.tsx'
 
 function FieldSet({ className, ...props }: React.ComponentProps<'fieldset'>) {
 	return (
@@ -163,31 +163,7 @@ function FieldError({
 }: React.ComponentProps<'div'> & {
 	errors?: Array<{ message?: string } | undefined>
 }) {
-	const content = useMemo(() => {
-		if (children) {
-			return children
-		}
-
-		if (!errors?.length) {
-			return null
-		}
-
-		const uniqueErrors = [...new Map(errors.map(error => [error?.message, error])).values()]
-
-		if (uniqueErrors?.length == 1) {
-			return uniqueErrors[0]?.message
-		}
-
-		return (
-			<ul className="ml-4 flex list-disc flex-col gap-1">
-				{uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
-			</ul>
-		)
-	}, [children, errors])
-
-	if (!content) {
-		return null
-	}
+	if (Array.isEmptyArray(errors ?? [])) return null
 
 	return (
 		<div
@@ -196,7 +172,11 @@ function FieldError({
 			className={cn('font-normal text-destructive text-xs', className)}
 			{...props}
 		>
-			{content}
+			<ul className="ml-4 flex list-disc flex-col gap-1">
+				{errors?.map(error => (
+					<li key={error?.message}>{formatError(error)}</li>
+				))}
+			</ul>
 		</div>
 	)
 }

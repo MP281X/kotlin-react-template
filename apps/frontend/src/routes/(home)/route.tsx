@@ -32,6 +32,10 @@ function Layout() {
 
 	return Result.builder(useAtomValue(sessionAtom))
 		.onErrorTag('AuthError', () => <Navigate to="/auth" />)
+		.onErrorTag('RPCError', e => {
+			if (process.env['NODE_ENV'] !== 'development') throw e
+			window.location.href = 'https://localhost:7070'
+		})
 		.onWaiting(() => <Spinner />)
 		.onSuccess(() => (
 			<SidebarProvider className="items-stretch! min-h-dvh">
@@ -56,30 +60,30 @@ function Layout() {
 						<SidebarGroup>
 							<SidebarGroupContent>
 								<SidebarMenu>
-									<SidebarMenuItem>
-										<SidebarMenuButton render={<Link to="/realtime" />} tooltip="Realtime">
-											<RefreshCw />
-											<span>Realtime</span>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-									<SidebarMenuItem>
-										<SidebarMenuButton render={<Link to="/audit" />} tooltip="Audits">
-											<ClipboardListIcon />
-											<span>Audits</span>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-									<SidebarMenuItem>
-										<SidebarMenuButton render={<Link to="/graph" />} tooltip="Graph">
-											<GitGraphIcon />
-											<span>Graph</span>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
-									<SidebarMenuItem>
-										<SidebarMenuButton render={<Link to="/users" />} tooltip="Users">
-											<UsersIcon />
-											<span>Users</span>
-										</SidebarMenuButton>
-									</SidebarMenuItem>
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip="Realtime" onClick={() => navigate({ to: '/realtime' })}>
+										<RefreshCw />
+										<span>Realtime</span>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip="Audits" onClick={() => navigate({ to: '/audit' })}>
+										<ClipboardListIcon />
+										<span>Audits</span>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip="Graph" onClick={() => navigate({ to: '/graph' })}>
+										<GitGraphIcon />
+										<span>Graph</span>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+								<SidebarMenuItem>
+									<SidebarMenuButton tooltip="Users" onClick={() => navigate({ to: '/users' })}>
+										<UsersIcon />
+										<span>Users</span>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
 								</SidebarMenu>
 							</SidebarGroupContent>
 						</SidebarGroup>
@@ -88,7 +92,7 @@ function Layout() {
 					<SidebarFooter className="border-sidebar-border border-t">
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton render={<Link to="/profile" />} tooltip="Profile">
+								<SidebarMenuButton tooltip="Profile" onClick={() => navigate({ to: '/profile' })}>
 									<UserIcon />
 									<span>Profile</span>
 								</SidebarMenuButton>
@@ -136,7 +140,7 @@ function Header() {
 	return (
 		<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
 			<SidebarTrigger className="-ml-1" />
-			<Separator orientation="vertical" className="mr-2 h-4" />
+			<Separator orientation="vertical" className="mr-2 h-full" />
 			<span className="text-muted-foreground text-sm">{title}</span>
 		</header>
 	)

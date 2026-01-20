@@ -30,28 +30,6 @@ function FieldWrapper(props: {
 	)
 }
 
-/** Creates an input field component for the specified input type. */
-function createInputField(type: 'text' | 'email' | 'password') {
-	return function InputField() {
-		const field = useFieldContext<string>()
-		const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
-		return (
-			<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
-				<Input
-					type={type}
-					id={field.name}
-					name={field.name}
-					value={field.state.value}
-					onBlur={field.handleBlur}
-					onChange={e => field.handleChange(e.target.value)}
-					autoComplete="off"
-					aria-invalid={isInvalid}
-				/>
-			</FieldWrapper>
-		)
-	}
-}
-
 function SubmitButton(props: { children: React.ReactNode }) {
 	const form = useFormContext()
 
@@ -59,12 +37,11 @@ function SubmitButton(props: { children: React.ReactNode }) {
 		<form.Subscribe
 			selector={state => ({
 				isSubmitting: state.isSubmitting,
-				canSubmit: state.canSubmit,
-				isTouched: state.isTouched
+				canSubmit: state.canSubmit
 			})}
 		>
-			{({ isSubmitting, canSubmit, isTouched }) => (
-				<Button type="submit" disabled={isSubmitting || !canSubmit || !isTouched}>
+			{({ isSubmitting, canSubmit }) => (
+				<Button type="submit" disabled={isSubmitting || !canSubmit}>
 					{isSubmitting && <Spinner />}
 					{props.children}
 				</Button>
@@ -92,9 +69,60 @@ function CancelButton(props: { children: React.ReactNode; onClick: () => void })
 	)
 }
 
-const TextField = createInputField('text')
-const EmailField = createInputField('email')
-const PasswordField = createInputField('password')
+function TextField() {
+	const field = useFieldContext<string>()
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+	return (
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
+			<Input
+				type="text"
+				id={field.name}
+				name={field.name}
+				value={field.state.value}
+				onBlur={field.handleBlur}
+				onChange={e => field.handleChange(e.target.value)}
+				autoComplete="off"
+				aria-invalid={isInvalid}
+			/>
+		</FieldWrapper>
+	)
+}
+function EmailField() {
+	const field = useFieldContext<string>()
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+	return (
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
+			<Input
+				type="email"
+				id={field.name}
+				name={field.name}
+				value={field.state.value}
+				onBlur={field.handleBlur}
+				onChange={e => field.handleChange(e.target.value)}
+				autoComplete="off"
+				aria-invalid={isInvalid}
+			/>
+		</FieldWrapper>
+	)
+}
+function PasswordField() {
+	const field = useFieldContext<string>()
+	const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+	return (
+		<FieldWrapper name={field.name} isInvalid={isInvalid} errors={field.state.meta.errors}>
+			<Input
+				type="password"
+				id={field.name}
+				name={field.name}
+				value={field.state.value}
+				onBlur={field.handleBlur}
+				onChange={e => field.handleChange(e.target.value)}
+				autoComplete="off"
+				aria-invalid={isInvalid}
+			/>
+		</FieldWrapper>
+	)
+}
 
 function TextAreaField() {
 	const field = useFieldContext<string>()

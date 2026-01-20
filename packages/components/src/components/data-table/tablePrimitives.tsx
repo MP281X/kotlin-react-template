@@ -59,7 +59,7 @@ BaseTable.Head = function BaseTableHead<TData>(props: any) {
 	return (
 		<TableHead
 			className={cn(
-				'sticky top-0 z-10 bg-card',
+				'sticky top-0 z-10 border-l bg-card first:border-l-0',
 				canSort && 'cursor-pointer select-none hover:bg-accent',
 				columnSize === 1 && 'w-px whitespace-nowrap',
 				props.className
@@ -82,7 +82,9 @@ BaseTable.Head = function BaseTableHead<TData>(props: any) {
 
 BaseTable.Cell = function BaseTableCell(props: BaseTable.Cell.Props) {
 	return (
-		<TableCell className={cn(props.columnSize === 1 && 'w-px whitespace-nowrap', props.className)}>
+		<TableCell
+			className={cn('border-l first:border-l-0', props.columnSize === 1 && 'w-px whitespace-nowrap', props.className)}
+		>
 			<div className="flex items-center gap-2">{props.children}</div>
 		</TableCell>
 	)

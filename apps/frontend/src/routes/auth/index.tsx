@@ -16,8 +16,11 @@ function Page() {
 	const canGoBack = useCanGoBack()
 
 	const form = useForm({
-		defaultValues: { email: localStorage.getItem('email') ?? '', password: '' },
-		validationLogic: revalidateLogic({ mode: 'change' }),
+		defaultValues: {
+			email: localStorage.getItem('email') ?? '',
+			password: process.env['NODE_ENV'] === 'development' ? 'password' : ''
+		},
+		validationLogic: revalidateLogic({ mode: 'submit' }),
 		validators: { onDynamic: Schema.standardSchemaV1(signInSchema) },
 		onSubmit: async ({ value }) => {
 			await rpc.login(value)
